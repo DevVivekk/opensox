@@ -42,6 +42,7 @@ function loadModules(): SheetModule[] {
           name: data.name || "Untitled",
           videoUrl: data.videoUrl || "",
           comingSoon: data.comingSoon ?? false,
+          isNew: data.isNew ?? false,
           docContent: htmlContent,
         };
       })

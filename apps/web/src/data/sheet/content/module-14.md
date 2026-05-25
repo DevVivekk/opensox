@@ -1,15 +1,9 @@
 ---
 id: "module-14"
-name: "How to tackle competition in saturated orgs?"
-videoUrl: ""
-comingSoon: true
+name: "How to fix an issue (real example)"
+videoUrl: "https://youtu.be/rnzRnUohYdI"
+comingSoon: false
+isNew: true
 ---
 
-How to tackle competition in saturated orgs?
-
-How to tackle competition in saturated orgs?
-
-Strategies for standing out and getting your contributions noticed in highly competitive OPEN SOURCE organizations.
-
-Strategies for standing out and getting your contributions noticed in highly competitive OPEN SOURCE organizations.
-
+This module explains How to fix an issue (w real example). Enjoy! This is Ajeet for you.

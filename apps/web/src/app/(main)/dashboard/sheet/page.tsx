@@ -46,6 +46,7 @@ const SheetTableRow = memo(function SheetTableRow({
   isPaidUser: boolean;
 }) {
   const isComingSoon = module.comingSoon === true;
+  const isNew = module.isNew === true;
 
   return (
     <TableRow
@@ -62,6 +63,11 @@ const SheetTableRow = memo(function SheetTableRow({
           <span className="max-w-[80px] md:max-w-none break-words">
             {module.name}
           </span>
+          {isNew && (
+            <span className="inline-flex items-center rounded-md border border-success-text/30 bg-success-text/20 px-2 py-0.5 text-[10px] font-semibold text-success-text">
+              New
+            </span>
+          )}
           {isComingSoon && (
             <Badge className="bg-ox-purple/20 text-ox-purple border-ox-purple/30 text-[10px] px-2 py-0.5">
               Soon

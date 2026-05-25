@@ -33,6 +33,7 @@ function loadModulesMetadata(): Omit<SheetModule, "docContent">[] {
           name: data.name || "Untitled",
           videoUrl: data.videoUrl || "",
           comingSoon: data.comingSoon ?? false,
+          isNew: data.isNew ?? false,
         };
       })
       .sort((a, b) => {

@@ -1,15 +1,9 @@
 ---
 id: "module-13"
-name: "Raise PRs and fix the reviews"
-videoUrl: ""
-comingSoon: true
+name: "How to get an issue assgined (real example)"
+videoUrl: "https://youtu.be/zYHENIeaXrc"
+comingSoon: false
+isNew: true
 ---
 
-Raise PRs and fix the reviews
-
-Raise PRs and fix the reviews
-
-Learn how to create pull requests and effectively address review comments from maintainers.
-
-Learn how to create pull requests and effectively address review comments from maintainers.
-
+This module explains How to get an issue assgined (w real example). Enjoy! This is Ajeet for you.
