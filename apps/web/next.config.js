@@ -66,6 +66,11 @@ const nextConfig = {
         destination: '/pricing',
         permanent: true,
       },
+      {
+        source: '/blogs',
+        destination: '/blog',
+        permanent: true,
+      },
     ];
   },
 };

@@ -72,3 +72,50 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Blog post prose */
+.prose-blog {
+  @apply text-base leading-relaxed text-text-secondary;
+}
+.prose-blog h2 {
+  @apply font-heading text-xl font-semibold text-foreground mt-10 mb-4;
+}
+.prose-blog h3 {
+  @apply font-heading text-lg font-semibold text-foreground mt-8 mb-3;
+}
+.prose-blog p {
+  @apply mb-5;
+}
+.prose-blog a {
+  @apply text-brand-purple underline underline-offset-2 hover:text-foreground transition-colors;
+}
+.prose-blog strong {
+  @apply font-semibold text-foreground;
+}
+.prose-blog ul, .prose-blog ol {
+  @apply mb-5 pl-6;
+}
+.prose-blog ul {
+  @apply list-disc;
+}
+.prose-blog ol {
+  @apply list-decimal;
+}
+.prose-blog li {
+  @apply mb-1.5;
+}
+.prose-blog blockquote {
+  @apply border-l-2 border-border pl-4 italic text-text-muted my-6;
+}
+.prose-blog code {
+  @apply font-mono text-sm bg-surface-elevated px-1.5 py-0.5 rounded;
+}
+.prose-blog pre {
+  @apply bg-surface-elevated rounded-lg p-4 overflow-x-auto mb-5;
+}
+.prose-blog pre code {
+  @apply bg-transparent p-0;
+}
+.prose-blog hr {
+  @apply border-border my-8;
+}
+
