@@ -160,6 +160,13 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({
         return;
       }
 
+      const accessToken = (session as { accessToken?: string })?.accessToken;
+      if (!accessToken || accessToken.trim().length === 0) {
+        const redirectUrl = callbackUrl || "/pricing";
+        router.push(`/login?callbackUrl=${encodeURIComponent(redirectUrl)}`);
+        return;
+      }
+
       setIsProcessing(true);
 
       const razorpayKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
@@ -208,16 +215,27 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({
 
       await initiatePayment(options);
     } catch (error: any) {
+      const errorMessage = error?.message || "Failed to create order";
+      const isAuthError =
+        typeof errorMessage === "string" &&
+        /(invalid or expired token|missing or invalid authorization header|unauthorized)/i.test(
+          errorMessage
+        );
+
       console.warn("Failed to create order:", error);
-      // Track order creation failure
-      trackPaymentFailed(
-        planId,
-        "order_creation_failed",
-        error?.message || "Failed to create order"
-      );
+
+      if (isAuthError) {
+        trackPaymentFailed(planId, "auth_token_expired", errorMessage);
+        setIsProcessing(false);
+        const redirectUrl = callbackUrl || "/pricing";
+        router.push(`/login?callbackUrl=${encodeURIComponent(redirectUrl)}`);
+        return;
+      }
+
+      // Track non-auth order creation failure
+      trackPaymentFailed(planId, "order_creation_failed", errorMessage);
       setIsProcessing(false);
-      const redirectUrl = callbackUrl || "/pricing";
-      router.push(`/login?callbackUrl=${encodeURIComponent(redirectUrl)}`);
+      alert("Unable to start payment right now. Please try again.");
     }
   };
 
