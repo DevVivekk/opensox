@@ -62,6 +62,19 @@ export default async function BlogPostPage({
           className="prose-blog"
           dangerouslySetInnerHTML={{ __html: post.html }}
         />
+
+        {post.frontmatter.tweetUrl && (
+          <div className="mt-12 pt-8 border-t border-border">
+            <Link
+              href={post.frontmatter.tweetUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm border border-border rounded-full text-text-muted hover:text-foreground hover:border-text-muted transition-colors"
+            >
+              View original thread on X &rarr;
+            </Link>
+          </div>
+        )}
       </article>
     </main>
   );

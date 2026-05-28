@@ -86,7 +86,7 @@ html {
   @apply mb-5;
 }
 .prose-blog a {
-  @apply text-brand-purple underline underline-offset-2 hover:text-foreground transition-colors;
+  @apply text-brand-purple-light underline underline-offset-2 hover:text-foreground transition-colors;
 }
 .prose-blog strong {
   @apply font-semibold text-foreground;

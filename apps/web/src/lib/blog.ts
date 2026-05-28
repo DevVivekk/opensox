@@ -13,6 +13,7 @@ export interface BlogFrontmatter {
   description: string;
   author: string;
   tag: BlogTag;
+  tweetUrl?: string;
 }
 
 export interface BlogMeta extends BlogFrontmatter {
@@ -34,6 +35,7 @@ export function getAllPosts(): BlogMeta[] {
       description: data.description,
       author: data.author,
       tag: data.tag,
+      tweetUrl: data.tweetUrl,
     } as BlogMeta;
   });
 
