@@ -1,868 +1,326 @@
 "use client";
 
-import React, { useEffect } from "react";
-
-import { motion } from "framer-motion";
-import { CornerDownRight, Target } from "lucide-react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import Footer from "@/components/landing-sections/footer";
-import Header from "@/components/ui/header";
-import PrimaryButton from "@/components/ui/custom-button";
 import PaymentFlow from "@/components/payment/PaymentFlow";
+import PrimaryButton from "@/components/ui/custom-button";
+import Header from "@/components/ui/header";
 
 const Pitch = () => {
   const pathname = usePathname();
   const premiumPlanId = process.env.NEXT_PUBLIC_YEARLY_PREMIUM_PLAN_ID;
   const planIdOk =
-    typeof premiumPlanId === "string" && premiumPlanId.length > 0;
-
+    typeof premiumPlanId === "string" && premiumPlanId.trim().length > 0;
   const callbackUrl = `${pathname}#invest`;
-
-  useEffect(() => {
-    // handle any hash, not just #invest
-    const hash = window.location.hash;
-    if (hash) {
-      const element = document.getElementById(hash.substring(1)); // remove the #
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 100);
-      }
-    }
-  }, []);
 
   return (
     <>
-      <main className="w-full overflow-hidden flex flex-col items-center justify-center relative">
+      <main className="w-full overflow-hidden flex flex-col items-center justify-center relative pt-24 md:pt-28">
         <Header
           title={
             <>
-              <span className="text-brand-purple-light">&quot;</span>
-              opensox ai users are its investors
-              <span className="text-brand-purple-light">&quot;</span>
+              <span className="font-semibold [font-family:Helvetica,Arial,sans-serif]">
+                opensox manifesto
+              </span>
             </>
           }
         />
         <div className="flex flex-col bg-surface-secondary/20 backdrop-blur-xl relative w-full">
-          {/* Introduction */}
-          <div className="h-full pv relative">
-            <div className="py-8 border-b border-border px-4 lg:px-[60px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 0.4,
-                }}
-                className="max-w-4xl mx-auto space-y-6 text-text-secondary font-medium lowercase"
-              >
-                <p className="text-lg lg:text-xl">
-                  my philosophy to build opensox.ai is simple.
-                </p>
-                <p className="text-lg lg:text-xl">
-                  everyone brings outside investors, and their investors tell
-                  them what to do. i consider the user of opensox.ai (basically
-                  you) an investor of opensox.ai and you tell me what to do.
-                </p>
-                <p className="text-lg lg:text-xl">
-                  so, following that, everyone writes a pitch for their
-                  investors to invest in their startups. likewise, i am writing
-                  a pitch for you to invest in opensox.ai.
-                </p>
-              </motion.div>
-            </div>
-          </div>
+          <div className="py-8 border-b border-border px-4 lg:px-[60px]">
+            <div className="max-w-4xl mx-auto space-y-8 text-text-secondary font-normal text-lg lg:text-xl">
+              <p>
+                from my journey of open source, ive realized there&apos;re 4
+                biggest career destroying problems that someone who start their
+                tech journey faces.
+              </p>
 
-          <div className="py-4 border-b border-border px-4 lg:px-[60px]">
-            <motion.div
-              initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{
-                duration: 0.6,
-                ease: "easeOut",
-                type: "spring",
-                delay: 0.45,
-              }}
-              className="max-w-4xl mx-auto text-center"
-            >
-              <h2 className="text-2xl lg:text-3xl font-medium text-brand-purple-light font-mono mb-3 lowercase">
-                table of contents
-              </h2>
-              <nav>
-                <ul className="space-y-1.5 text-text-secondary font-medium lg:text-xl lowercase inline-block">
+              <div className="space-y-4">
+                <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
+                  1. lack of exposure
+                </h2>
+                <p>my definition of exposure is &quot;knowing what&apos;s possible&quot;.</p>
+                <p>when i started open source i didn&apos;t even know what&apos;s possible.</p>
+                <p>
+                  hence i made wrong decisions and wasted lots of time and
+                  efforts.
+                </p>
+                <p>same thing happens with everyone who starts with open source.</p>
+                <p>
+                  if you don&apos;t know what&apos;s possible, you won&apos;t be
+                  able to even try something worthy no matter how talented,
+                  smart or hard working you are.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
+                  2. lack of feedback
+                </h2>
+                <p>getting the exposure is sometimes easy.</p>
+                <p>
+                  i joined twitter and made lots of good friends there and that
+                  way i was able to get the exposure of outer world.
+                </p>
+                <p>but i was still trying alone.</p>
+                <p>
+                  trial and error. if i made a mistake, i didn&apos;t realize
+                  till i face the painful consequences of it.
+                </p>
+                <p>and that&apos;s the problem with almost all the college students.</p>
+                <p>
+                  there&apos;s no way someone or something can tell them
+                  &quot;hey, this decision you took may not be very good because
+                  of X reason. try this instead&quot;.
+                </p>
+                <p>
+                  so they become the victims of their own trial and error loop.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
+                  3. lack of selling skills
+                </h2>
+                <p>
+                  nikola tesla died as a poor scientist in a small compartment
+                  while thomas edison enjoyed money throughout his life and died
+                  while having $12M (today&apos;s value $263M) in his assets.
+                </p>
+                <p>
+                  not because thomas edison was smarter than nikola tesla but
+                  because he knew how to sell.
+                </p>
+                <p>how to show off.</p>
+                <p>
+                  being a cracked engineer is one thing and being able to show
+                  the world your capabilities is a different game.
+                </p>
+                <p>
+                  most people in tech focus on the first part and ignore the
+                  second one.
+                </p>
+                <p>
+                  and soon enough they realize people less talented, less smart
+                  and less hardworking than them are getting salary hikes,
+                  starting their own startups, raising VC capital, moving to SF,
+                  retiring their parents, buying the dream house and car and
+                  doing everything that life can offer.
+                </p>
+                <p>
+                  the difference was not the technical skills but the selling
+                  skills.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
+                  4. lack of problem solving
+                </h2>
+                <p>
+                  whenever the term &quot;problem solving&quot; comes, most
+                  people automatically assumes &quot;DSA&quot;,
+                  &quot;Maths&quot;, &quot;Logic&quot;, etc.
+                </p>
+                <p>
+                  in reality these things are abstractions of something under
+                  the hood.
+                </p>
+                <p>
+                  fundamentally, there&apos;s only one problem solving skill.
+                  First Principles.
+                </p>
+                <p>
+                  first principles is the mother of every innovation we see
+                  around us.
+                </p>
+                <p>
+                  most college students don&apos;t even have basic critical
+                  thinking.
+                </p>
+                <p>and AI and vibe coding has made it worse.</p>
+                <p>they can&apos;t ask a question properly (my DMs are the proof).</p>
+                <p>they can&apos;t implement a feature without using AI.</p>
+                <p>
+                  they can&apos;t learn a piece of tech without 11-hr-long
+                  tutorial or blog.
+                </p>
+                <p>
+                  they can&apos;t build a project without looking at the
+                  tutorial.
+                </p>
+                <p>
+                  and then they blame the market for not being able to get
+                  opportunities.
+                </p>
+              </div>
+
+              <div className="border-t border-border pt-8 space-y-4">
+                <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
+                  so the goal of opensox is to help you eliminate these 4
+                  problems from your life.
+                </h2>
+                <p>here's how.</p>
+                <ul className="space-y-3 list-disc pl-6">
                   <li>
-                    <a
-                      href="#mission-statement"
-                      className="text-text-secondary hover:text-brand-purple-light transition-colors duration-300 underline"
-                    >
-                      mission statement
-                    </a>
+                    onboarding call. with me. to set up the direction. for ur
+                    goals in open source.
                   </li>
                   <li>
-                    <a
-                      href="#my-goal"
-                      className="text-text-secondary hover:text-brand-purple-light transition-colors duration-300 underline"
-                    >
-                      my goal
-                    </a>
+                    feedback and guidance on <strong>anything related to open source</strong>.
+                    be it programms like GSoC, LFX, Summer of Bitcoin or remote
+                    jobs and internships at commercial open source startups.
                   </li>
                   <li>
-                    <a
-                      href="#the-plan"
-                      className="text-text-secondary hover:text-brand-purple-light transition-colors duration-300 underline"
-                    >
-                      the plan
-                    </a>
+                    a highly active, small token, limited community. full of
+                    cracked engineers. where you get personal attention of me.
+                    24 * 7 * 365.
+                  </li>
+                  <li>weekly live sessions. on the topics of your choice.</li>
+                  <li>
+                    unlimited QnAs. ask anything. anytime. directly to me. no
+                    TA in the middle.
                   </li>
                   <li>
-                    <a
-                      href="#philosophies"
-                      className="text-text-secondary hover:text-brand-purple-light transition-colors duration-300 underline"
-                    >
-                      philosophies i follow
-                    </a>
+                    weekly contests. on open source. build in public. first
+                    principles.
                   </li>
                   <li>
-                    <a
-                      href="#so-how-small"
-                      className="text-text-secondary hover:text-brand-purple-light transition-colors duration-300 underline"
-                    >
-                      so how small?
-                    </a>
+                    dedicated content. on open source. build in public. first
+                    principles. that you can&apos;t find anywhere else over the
+                    internet. only for the opensox pro members.
                   </li>
                   <li>
-                    <a
-                      href="#testimonials"
-                      className="text-text-secondary hover:text-brand-purple-light transition-colors duration-300 underline"
-                    >
-                      what existing investors said
-                    </a>
+                    hand picked open source projects. cut the BS. and
+                    contribute from the day 1.
                   </li>
                   <li>
-                    <a
-                      href="#questions"
-                      className="text-text-secondary hover:text-brand-purple-light transition-colors duration-300 underline"
-                    >
-                      questions you may have
-                    </a>
+                    recordings of all the previous weekly sessions. organized by
+                    the topics. and timestamps.
+                  </li>
+                  <li>wanna ask something personal? open a private thread anytime.</li>
+                  <li>
+                    latest updates. on anything related to open source, jobs,
+                    tech, etc.
+                  </li>
+                  <li>daily stand ups. for accountability.</li>
+                  <li>
+                    anything else that i learn. do. find valuable. i share. with
+                    my people.
                   </li>
                   <li>
-                    <a
-                      href="#invest"
-                      className="text-text-secondary hover:text-brand-purple-light transition-colors duration-300 underline"
-                    >
-                      how to invest in opensox.ai?
-                    </a>
+                    all of this with no chaos. just a few limited and quality
+                    people.
+                  </li>
+                  <li>
+                    + any upcoming feature in opensox pro will be yours. without
+                    a single dime of extra money.
                   </li>
                 </ul>
-              </nav>
-            </motion.div>
-          </div>
+              </div>
 
-          {/* The Pitch */}
-          <div className="h-full relative border-b border-border">
-            <div className="py-8 border-b border-border">
-              <motion.h2
-                id="the-pitch"
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 0.5,
-                }}
-                className="text-center text-3xl lg:text-4xl tracking-tight font-bold text-brand-purple-light px-4 font-mono"
-              >
-                the pitch
-              </motion.h2>
-            </div>
+              <div className="border-t border-border pt-8 space-y-4">
+                <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
+                  but how will you be able give personal attention and do all
+                  of that if the number of opensox pro members grow in future?
+                </h2>
+                <p>
+                  i thought about this a lot. and made a hard decision to stay
+                  small.
+                </p>
+                <p>how small?</p>
+                <p className="text-brand-purple-light">177 people. a month. only.</p>
+                <p>but why 177?</p>
+                <p>
+                  as per the calculations on the number of current members in
+                  the opensox pro community,
+                </p>
+                <p>10% of the members are highly active.</p>
+                <p>30% are active.</p>
+                <p>40% are ocasionally active.</p>
+                <p>and rest 20% join for the sake of hobby.</p>
+                <p>they&apos;re already professionals in something else.</p>
+                <p>
+                  so 177 is the number i can manage. and give you my personal
+                  attention.
+                </p>
+              </div>
 
-            {/* Mission Statement */}
-            <div className="py-8 border-b border-border px-4 lg:px-[60px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 0.6,
-                }}
-                className="max-w-4xl mx-auto space-y-4"
-              >
-                <h3
-                  id="mission-statement"
-                  className="text-2xl lg:text-3xl font-medium text-brand-purple-light font-mono"
-                >
-                  mission statement
-                </h3>
-                <p className="text-text-secondary font-medium text-lg lg:text-xl lowercase">
-                  the mission is{" "}
-                  <span className="underline decoration-brand-purple-light">
-                    to provide you the most genuine and authentic help
-                  </span>{" "}
-                  to get the opportunities (jobs, internships, gsoc, lfx, etc)
-                  in open source. i&apos;m creating a product that i wish
-                  existed 4 years ago when i started doing open source.
+              <div className="border-t border-border pt-8 space-y-4">
+                <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
+                  how to make the best of opensox?
+                </h2>
+                <p>
+                  opensox pro isn&apos;t a course or program where 100
+                  pre-recorded videos will be thrown at you and you&apos;ll be
+                  required to watch and later on you receive a certificate to
+                  add in your linkedin.
                 </p>
-              </motion.div>
-            </div>
+                <p>
+                  opensox pro is a small and effective ecosystem for limited
+                  people.
+                </p>
+                <p>
+                  here you make efforts, you get stuck, you get the instant help
+                  and feedback, you improve.
+                </p>
+                <p>
+                  here you&apos;re not taught the technologies like the syllabus
+                  of class 10th but you engage in methods to learn the a
+                  technology on your own.
+                </p>
+                <p>like how a true engineer does.</p>
+                <p>
+                  here the community provokes you to put the best efforts of
+                  your life.
+                </p>
+                <p>
+                  here the obsession drives the people not a fixed class
+                  schedule.
+                </p>
+              </div>
 
-            {/* My Goal */}
-            <div className="py-8 border-b border-border px-4 lg:px-[60px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 0.7,
-                }}
-                className="max-w-4xl mx-auto space-y-6"
-              >
-                <h3
-                  id="my-goal"
-                  className="text-2xl lg:text-3xl font-medium text-brand-purple-light font-mono"
-                >
-                  my goal
-                </h3>
-                <p className="text-text-secondary font-medium text-lg lg:text-xl lowercase">
-                  when i started open source 4 years ago, i had no one to give
-                  me timely human (yes, it&apos;s important) feedback, so i had
-                  to learn by trial and error - this took a lot of time, effort,
-                  and painful moments.
-                </p>
-                <p className="text-text-secondary font-medium text-lg lg:text-xl lowercase">
-                  so my goal is to build a product that:
-                </p>
-                <ul className="space-y-3 [&>li]:flex [&>li]:items-start [&>li]:gap-4 [&>li]:text-text-secondary [&>li]:font-medium [&>li]:text-lg [&>li]:lowercase">
-                  <li>
-                    <CornerDownRight className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>
-                      is a Single Consolidate Platform for Everything in Open
-                      Source
-                    </span>
-                  </li>
-                  <li>
-                    <CornerDownRight className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>gives you timely human feedback 24/7</span>
-                  </li>
-                  <li>
-                    <CornerDownRight className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>
-                      keeps you updated with everything happening in the open
-                      source ecosystem
-                    </span>
-                  </li>
-                  <li>
-                    <CornerDownRight className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>keeps you aligned with your objectives</span>
-                  </li>
-                  <li>
-                    <CornerDownRight className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>gives you the freedom to ask anything anytime.</span>
-                  </li>
-                </ul>
-                <p className="text-text-secondary font-medium text-lg lg:text-xl pt-4 lowercase">
-                  <strong className="text-brand-purple-light">
-                    the bottom line
-                  </strong>{" "}
-                  - my goal is to make you achieve things in 1 year that took me
-                  3.
-                </p>
-              </motion.div>
-            </div>
+              <div className="border-t border-border pt-8 space-y-6">
+                <div id="invest" className="space-y-4 text-center">
+                  <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
+                    how to invest?
+                  </h2>
+                  <div className="flex justify-center">
+                    {planIdOk ? (
+                      <div className="w-full max-w-[180px]">
+                        <PaymentFlow
+                          planId={premiumPlanId}
+                          planName="Opensox Pro"
+                          description="Annual Subscription"
+                          buttonText="im in"
+                          buttonClassName="w-full"
+                          callbackUrl={callbackUrl}
+                          buttonLocation="pitch_page"
+                        />
+                      </div>
+                    ) : (
+                      <Link href="/pricing" className="w-full max-w-[180px]">
+                        <PrimaryButton classname="w-full">im in</PrimaryButton>
+                      </Link>
+                    )}
+                  </div>
+                </div>
 
-            {/* The Plan */}
-            <div className="py-8 border-b border-border px-4 lg:px-[60px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 0.8,
-                }}
-                className="max-w-4xl mx-auto space-y-6"
-              >
-                <h3
-                  id="the-plan"
-                  className="text-2xl lg:text-3xl font-medium text-brand-purple-light font-mono"
-                >
-                  the plan
-                </h3>
-                <p className="text-text-secondary font-medium text-lg lg:text-xl lowercase">
-                  so what&apos;s my plan for this goal?
-                </p>
-                <p className="text-text-secondary font-medium text-lg lg:text-xl lowercase">
-                  here it is:
-                </p>
-                <ul className="space-y-4 [&>li]:flex [&>li]:items-start [&>li]:gap-4 [&>li]:text-text-secondary [&>li]:font-medium [&>li]:text-lg [&>li]:lowercase">
-                  <li>
-                    <Target className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>
-                      <strong className="text-text-primary">
-                        for timely human feedback 24/7
-                      </strong>{" "}
-                      = a private discord channel
-                    </span>
-                  </li>
-                  <li>
-                    <Target className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>
-                      <strong className="text-text-primary">
-                        to keep you updated with open source
-                      </strong>{" "}
-                      = opensox.ai pro platform - A Single Consolidated Platform
-                      for Everything in Open Source
-                    </span>
-                  </li>
-                  <li>
-                    <Target className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>
-                      <strong className="text-text-primary">
-                        for weekly session
-                      </strong>{" "}
-                      = weekly session every sunday, 10 pm ist.
-                    </span>
-                  </li>
-                  <li>
-                    <Target className="size-5 flex-shrink-0 text-brand-purple-light mt-1" />
-                    <span>
-                      <strong className="text-text-primary">
-                        for freedom to ask anything anytime
-                      </strong>{" "}
-                      = onboarding call + discord channel + pre-session 1:1
-                      (every week).
-                    </span>
-                  </li>
-                </ul>
-                <p className="text-text-secondary font-medium text-lg lg:text-xl pt-4 lowercase">
-                  it is just the start, every single day i&apos;m working to
-                  bring the best possible service to you.
-                </p>
-              </motion.div>
-            </div>
+                <div className="border-t border-border"></div>
 
-            {/* Philosophies */}
-            <div className="py-8 border-b border-border px-4 lg:px-[60px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 0.9,
-                }}
-                className="max-w-4xl mx-auto space-y-8"
-              >
-                <h3
-                  id="philosophies"
-                  className="text-2xl lg:text-3xl font-medium text-brand-purple-light font-mono"
-                >
-                  philosophies i follow
-                </h3>
-
-                {/* Philosophy #1 */}
-                <div className="space-y-4">
-                  <h4
-                    id="stay-small-stay-effective"
-                    className="text-xl lg:text-2xl font-medium text-brand-purple-light font-mono"
+                <p>
+                  wanna ask something? shoot it here:{" "}
+                  <a
+                    href="mailto:opensoxlabs@gmail.com"
+                    className="text-link hover:text-link-hover underline"
                   >
-                    #1 stay small. stay effective.
-                  </h4>
-                  <div className="space-y-4 text-text-secondary font-medium text-lg lowercase">
-                    <p>while building opensox.ai, i had two choices.</p>
-                    <p>
-                      the first one is &quot;play big. grow huge,&quot; and the
-                      second one is &quot;stay small. stay effective&quot;
-                    </p>
-                    <div className="space-y-3 lowercase">
-                      <p>
-                        <span className="underline decoration-brand-purple-light decoration-2">
-                          if i go by the first choice,
-                        </span>
-                        <br></br>
-                        <br></br>
-                        i&apos;ll have to raise funding from the investors, and
-                        to keep those investors happy, i&apos;ll have to grow -
-                        that&apos;s the only metric they understand.
-                        <br></br>
-                        <br></br>
-                        and then i&apos;ll have to grow in terms of number of
-                        users, monthly volume, etc. and when there will be
-                        millions of users, i will not be able to provide the
-                        users the most important thing they need — the genuine
-                        and authentic help by a human (me) time to time.
-                        <br></br>
-                        <br></br>
-                        because a human has a limit on how many people he can
-                        help in a single day. and this defeats my main mission
-                        statement with which i started in the first place.
-                      </p>
-                      <div className="border-b border-border my-4"></div>
-                      <p>
-                        <span className="underline decoration-brand-purple-light decoration-2">
-                          now the second choice — stay small. stay effective.
-                        </span>
-                      </p>
-                      <p>
-                        if i go with this approach, i&apos;ll have to sacrifice
-                        those fancy dreams of raising millions, being on the
-                        front page of magazines, having millions of users, etc.
-                        <br></br>
-                        <br></br>
-                        but the good part is i&apos;ll be able to stay genuine
-                        and authentic. you will be able to ping me anytime. even
-                        tho, i&apos;ll serve a very tiny portion of the users
-                        but i&apos;ll be able to do so at my best. also, because
-                        no one is forcing me to grow, i could stay small and
-                        effective forever.
-                      </p>
-                      <p className="font-bold underline decoration-brand-purple-light decoration-2">
-                        so i choose the #2 choice. why?
-                      </p>
-                      <p className="text-brand-purple-light px-4 py-3">
-                        because i&apos;d rather choose serving a hundred people
-                        by providing them the best value in the market than
-                        serving a million with an avg sub-standard product.
-                      </p>
-                      <p className="text-text-tertiary italic">
-                        (for the same reasons, i&apos;ve rejected an{" "}
-                        <Link
-                          href="https://x.com/ajeetunc/status/1963503678545170571?s=20"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-link hover:opacity-80 underline"
-                        >
-                          investment offer
-                        </Link>{" "}
-                        very recently)
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Philosophy #2 */}
-                <div className="space-y-4">
-                  <h4
-                    id="go-beyond-what-you-promise"
-                    className="text-xl lg:text-2xl font-medium text-brand-purple-light font-mono"
-                  >
-                    #2 go beyond what you promise.
-                  </h4>
-                  <div className="space-y-4 text-text-secondary font-medium text-lg lowercase">
-                    <p>
-                      even though i focus primarily on open source, we talk
-                      about anything in the opensox community, be it learning
-                      ai/ml, building projects, building online presence (highly
-                      important), getting jobs/opportunities, and a lot.
-                    </p>
-                    <p>
-                      my personal goal is to always deliver more than you
-                      expected to make it worth it for you to invest in
-                      opensox.ai.
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* The Process */}
-            <div className="py-8 border-b border-border px-4 lg:px-[60px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 1.0,
-                }}
-                className="max-w-4xl mx-auto space-y-6"
-              >
-                <h3
-                  id="so-how-small"
-                  className="text-2xl lg:text-3xl font-medium text-brand-purple-light font-mono"
-                >
-                  so how small?
-                </h3>
-                <p className="text-text-secondary font-medium text-lg lowercase">
-                  max <span className="text-brand-purple-light">166</span>{" "}
-                  investors a month
+                    opensoxlabs@gmail.com
+                  </a>{" "}
+                  i reply within 2 hrs.
                 </p>
-                <p className="text-text-secondary font-medium text-lg lowercase">
-                  only <span className="text-brand-purple-light">2,000</span>{" "}
-                  investors in the whole year
-                </p>
-              </motion.div>
-            </div>
-
-            {/* What Existing Investors Said */}
-            <div className="py-8 border-b border-border px-4 lg:px-[60px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 1.1,
-                }}
-                className="max-w-4xl mx-auto space-y-6"
-              >
-                <h3
-                  id="testimonials"
-                  className="text-2xl lg:text-3xl font-medium text-brand-purple-light font-mono"
-                >
-                  what existing investors said about me?
-                </h3>
-                <div className="space-y-4 text-text-secondary font-medium text-lg lowercase">
-                  <p>
-                    check out{" "}
-                    <Link
-                      href="/testimonials"
-                      className="text-link hover:text-link-hover underline"
-                    >
-                      testimonials
-                    </Link>{" "}
-                    from investors who&apos;ve invested.
-                  </p>
-                  <p className="text-text-tertiary italic text-base">
-                    (you can also see more detailed reviews on the{" "}
-                    <Link
-                      href="/pricing#testimonials"
-                      className="text-link hover:text-link-hover underline"
-                    >
-                      pricing page
-                    </Link>
-                    )
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Questions */}
-            <div className="py-8 border-b border-border px-4 lg:px-[60px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 1.2,
-                }}
-                className="max-w-4xl mx-auto space-y-8"
-              >
-                <h3
-                  id="questions"
-                  className="text-2xl lg:text-3xl font-medium text-brand-purple-light font-mono"
-                >
-                  questions you may have
-                </h3>
-
-                <div className="space-y-8">
-                  <div className="space-y-3">
-                    <h4
-                      id="not-beginner"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      i&apos;m not an absolute beginner, so how does subscribing
-                      to opensox.ai make sense to me?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      as i said before, the core goal of opensox.ai is to save
-                      your time. so if you try on your own, that&apos;s good
-                      too, but in most cases, you&apos;ll learn through trial
-                      and error and it may cost you a lot of time.
-                      <br></br>
-                      <br></br>
-                      on the other hand, if you invest in opensox.ai,
-                      you&apos;ll have someone (me) to whom you can go to
-                      anytime and ask for feedback, and i can tell you
-                      &quot;hey, i think this idea won&apos;t work&quot; with a
-                      clear reason. and here you&apos;ll be able to avoid a time
-                      costing mistake.
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="quality-reduce"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      will the quality of your service reduce as you grow?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      never. this is the reason i&apos;m committed to only allow
-                      166 investors a month. i can compromise with the growth,
-                      revenue, etc, but never with the quality of the service.
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="how-opensox-pro-helps"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      how does opensox.ai pro help me?
-                    </h4>
-                    <ul className="space-y-2 text-text-secondary font-medium text-lg pl-4 lowercase">
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>
-                          once you invest in opensox.ai, you&apos;ll immediately
-                          get an email with a meet link. that meet will be our
-                          onboarding call, in which you and i sit together and
-                          talk things through and set our objectives.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>
-                          also, you&apos;ll receive the invitation to our
-                          internal discord channel, there you&apos;ll receive
-                          all the updates like weekly meets, resources,
-                          discussions, etc. also, you can ping me there for any
-                          doubts.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>
-                          at the same time, your pro plan on opensox.ai will get
-                          activated, and pro newsletters, pro filters to search
-                          open source projects, and other pro features will be
-                          unlocked.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>
-                          after that, we&apos;ll do weekly sessions where you
-                          can ask me anything, and we&apos;ll discuss one
-                          particular topic - last week&apos;s was &quot;
-                          <Link
-                            href="https://www.youtube.com/watch?v=24CdxwRq0PI"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-link hover:text-link-hover underline"
-                          >
-                            learning tech from the first principles
-                          </Link>
-                          &quot;.
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>
-                          along with this, whatever pro feature/service is
-                          added, you&apos;ll get it without any extra charges.
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="time-to-results"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      how much time does it take to get the results?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      it is highly subjective because it depends on how much
-                      effort you put. but, as per my personal assumption, people
-                      who started from zero have started making visible progress
-                      within the first month.
-                      <br></br>
-                      <br></br>
-                      for example, satya joined 2 months ago when he was just a
-                      beginner, and now he&apos;s making 3-4 good-quality prs
-                      every week.
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="why-trust"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      why should i trust you?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      in order to check my credibility, you can check my{" "}
-                      <Link
-                        href="https://gist.github.com/apsinghdev/a19bc3b7e4b188bae30c45ad57c4c47d"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-link hover:text-link-hover underline"
-                      >
-                        profile and the work
-                      </Link>{" "}
-                      i have done so far. and check the{" "}
-                      <Link
-                        href="/testimonials"
-                        className="text-link hover:text-link-hover underline"
-                      >
-                        testimonials
-                      </Link>{" "}
-                      of investors who&apos;ve invested.
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="alternatives"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      are there any alternatives to what you provide?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      i haven&apos;t found any so far. either people are selling
-                      the recorded courses or some pseudo tools like
-                      check-ur-github-profile-aura (no hate tho) that don&apos;t
-                      seem to be helpful.
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="difference-from-course"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      what&apos;s the difference between opensox pro and a
-                      course?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      i&apos;ve answered most of it in &quot;how opensox.ai pro
-                      can help me&quot;, but if i have to say the difference in
-                      brief, then a course is like a dumbbell and opensox.ai pro
-                      is like a full-fledged gym with a personal trainer (me).
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="for-beginners"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      is it for an absolute beginner?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      yes. (given that you are ready to work hard)
-                    </p>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="when-not-to-invest"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      in what cases shouldn&apos;t i invest in opensox pro?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      oh i can tell you some cases when you shouldn&apos;t
-                      invest:
-                    </p>
-                    <ul className="space-y-2 text-text-secondary font-medium text-lg pl-4 lowercase">
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>
-                          you&apos;re already an expert in open source
-                        </span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>you don&apos;t wanna do it fast</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>you wanna learn it the hard way</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CornerDownRight className="size-4 flex-shrink-0 text-brand-purple-light mt-1" />
-                        <span>you own 100 acres of land.</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div className="space-y-3">
-                    <h4
-                      id="best-in-market"
-                      className="text-xl font-medium text-brand-purple-light font-mono"
-                    >
-                      are you the best in the market?
-                    </h4>
-                    <p className="text-text-secondary font-medium text-lg lowercase">
-                      yes. the reasons are given above.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-6 border-t border-border">
-                  <p className="text-text-secondary font-medium text-lg lowercase">
-                    my question isn&apos;t here? shoot it here:{" "}
-                    <Link
-                      href="mailto:opensoxlabs@gmail.com"
-                      className="text-link hover:text-link-hover underline"
-                    >
-                      opensoxlabs@gmail.com
-                    </Link>{" "}
-                    i&apos;ll reply within 24 hrs.
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* How to Invest */}
-            <div
-              id="invest"
-              className="py-12 border-b border-border px-4 lg:px-[60px]"
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  duration: 0.6,
-                  ease: "easeOut",
-                  type: "spring",
-                  delay: 1.3,
-                }}
-                className="max-w-2xl mx-auto space-y-8 text-center"
-              >
-                <h3 className="text-3xl lg:text-4xl font-medium text-brand-purple-light lowercase font-mono">
-                  how to invest in opensox.ai?
-                </h3>
-                <div className="flex justify-center">
-                  {planIdOk ? (
-                    <PaymentFlow
-                      planId={premiumPlanId}
-                      planName="Opensox Pro"
-                      description="Annual Subscription"
-                      buttonText="Invest"
-                      buttonClassName="w-full max-w-md"
-                      callbackUrl={callbackUrl}
-                      buttonLocation="pitch_page"
-                    />
-                  ) : (
-                    <Link href="/pricing" className="w-full max-w-md">
-                      <PrimaryButton classname="w-full">
-                        Invest Now
-                      </PrimaryButton>
-                    </Link>
-                  )}
-                </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
