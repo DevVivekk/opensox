@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { TRPCClientError } from "@trpc/client";
 import { trpc } from "@/lib/trpc";
 import { useRazorpay } from "@/hooks/useRazorpay";
 import type { RazorpayOptions } from "@/lib/razorpay";
@@ -216,15 +217,14 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({
       await initiatePayment(options);
     } catch (error: any) {
       const errorMessage = error?.message || "Failed to create order";
-      const isAuthError =
-        typeof errorMessage === "string" &&
-        /(invalid or expired token|missing or invalid authorization header|unauthorized)/i.test(
-          errorMessage
-        );
+      const isTRPCAuthError =
+        error instanceof TRPCClientError &&
+        (error.data?.code === "UNAUTHORIZED" ||
+          error.data?.code === "FORBIDDEN");
 
       console.warn("Failed to create order:", error);
 
-      if (isAuthError) {
+      if (isTRPCAuthError) {
         trackPaymentFailed(planId, "auth_token_expired", errorMessage);
         setIsProcessing(false);
         const redirectUrl = callbackUrl || "/pricing";
