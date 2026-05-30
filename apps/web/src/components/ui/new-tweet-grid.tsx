@@ -27,8 +27,9 @@ export const TweetGrid: React.FC<TweetGridProps> = ({
     safeTweets.filter((_, tweetIdx) => tweetIdx % columns === colIdx)
   );
 
-  const colsMd = Array.from({ length: 2 }, (_, colIdx) =>
-    safeTweets.filter((_, tweetIdx) => tweetIdx % columns === colIdx)
+  const mdCols = Math.min(2, columns);
+  const colsMd = Array.from({ length: mdCols }, (_, colIdx) =>
+    safeTweets.filter((_, tweetIdx) => tweetIdx % mdCols === colIdx)
   );
 
   return (
