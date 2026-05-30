@@ -1,23 +1,29 @@
 "use client";
 
 import { TweetProps, useTweet } from "react-tweet";
-import { MagicTweet } from "./Client-tweet";
-
-
+import {
+  isValidTweet,
+  MagicTweet,
+  TweetSkeleton,
+} from "./Client-tweet";
 
 export const ClientTweetCard = ({
-    id,
-    apiUrl,
-    components,
-    fetchOptions,
-    ...props
+  id,
+  apiUrl,
+  components,
+  fetchOptions,
+  ...props
 }: TweetProps & { className?: string }) => {
-    const { data, error, } = useTweet(id, apiUrl, fetchOptions);
+  const { data, error, isLoading } = useTweet(id, apiUrl, fetchOptions);
 
-    if (error || !data) {
+  if (isLoading) {
+    const Skeleton = components?.TweetSkeleton || TweetSkeleton;
+    return <Skeleton {...props} />;
+  }
 
-        return <></>
-    }
+  if (error || !data || !isValidTweet(data)) {
+    return null;
+  }
 
-    return <MagicTweet tweet={data} components={components} {...props} />;
+  return <MagicTweet tweet={data} components={components} {...props} />;
 };
