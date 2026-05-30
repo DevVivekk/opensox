@@ -17,8 +17,7 @@ export const ClientTweetCard = ({
   const { data, error, isLoading } = useTweet(id, apiUrl, fetchOptions);
 
   if (isLoading) {
-    const Skeleton = components?.TweetSkeleton || TweetSkeleton;
-    return <Skeleton {...props} />;
+    return <TweetSkeleton {...props} />;
   }
 
   if (error || !data || !isValidTweet(data)) {
