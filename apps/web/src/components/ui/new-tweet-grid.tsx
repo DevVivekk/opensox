@@ -11,22 +11,25 @@ export interface TweetGridProps {
 }
 
 export const TweetGrid: React.FC<TweetGridProps> = ({
-  tweets,
+  tweets = [],
   className,
   speed = "slow",
   columns = 3,
 }) => {
+  const safeTweets = tweets ?? [];
+
   const getDuration = () => {
     const map = { slow: 120, normal: 30, fast: 15 };
     return `${map[speed]}s`;
   };
 
   const cols = Array.from({ length: columns }, (_, colIdx) =>
-    tweets.filter((_, tweetIdx) => tweetIdx % columns === colIdx)
+    safeTweets.filter((_, tweetIdx) => tweetIdx % columns === colIdx)
   );
 
-  const colsMd = Array.from({ length: 2 }, (_, colIdx) =>
-    tweets.filter((_, tweetIdx) => tweetIdx % columns === colIdx)
+  const mdCols = Math.min(2, columns);
+  const colsMd = Array.from({ length: mdCols }, (_, colIdx) =>
+    safeTweets.filter((_, tweetIdx) => tweetIdx % mdCols === colIdx)
   );
 
   return (
@@ -96,7 +99,7 @@ export const TweetGrid: React.FC<TweetGridProps> = ({
             } as React.CSSProperties
           }
         >
-          {tweets.map((tweetId, i) => (
+          {safeTweets.map((tweetId, i) => (
             <div
               key={`col-tweet${i}`}
               className="flex-none !min-h-[154px] transition-transform"
