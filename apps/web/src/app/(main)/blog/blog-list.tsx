@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { BlogMeta, BlogTag } from "@/lib/blog";
+import BlogThemeSelector from "./blog-theme";
 
 const tags: BlogTag[] = ["engineering", "startup", "distribution", "misc"];
 
@@ -24,19 +25,22 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
     : posts;
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="blog-page min-h-screen">
       <div className="max-w-2xl mx-auto px-6 py-20">
         <header className="mb-12">
-          <Link
-            href="/"
-            className="text-sm text-text-muted hover:text-foreground transition-colors"
-          >
-            &larr; Home
-          </Link>
+          <div className="flex items-center justify-between">
+            <Link
+              href="/"
+              className="text-sm blog-link transition-colors"
+            >
+              &larr; Home
+            </Link>
+            <BlogThemeSelector />
+          </div>
           <h1 className="font-heading text-4xl font-bold mt-6">
             Opensox Blog
           </h1>
-          <p className="text-text-secondary mt-2">
+          <p className="blog-text-secondary mt-2">
             Thoughts on open source, startups, and building in public.
           </p>
         </header>
@@ -48,8 +52,8 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
             aria-pressed={activeTag === null}
             className={`px-3 py-1 text-sm rounded-full border transition-colors ${
               activeTag === null
-                ? "border-brand-purple text-brand-purple"
-                : "border-border text-text-muted hover:text-foreground hover:border-text-muted"
+                ? "blog-tag-active"
+                : "blog-link"
             }`}
           >
             All
@@ -61,8 +65,8 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
               aria-pressed={activeTag === tag}
               className={`px-3 py-1 text-sm rounded-full border transition-colors capitalize ${
                 activeTag === tag
-                  ? "border-brand-purple text-brand-purple"
-                  : "border-border text-text-muted hover:text-foreground hover:border-text-muted"
+                  ? "blog-tag-active"
+                  : "blog-link"
               }`}
             >
               {tag}
@@ -73,23 +77,23 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
         {/* Blog list */}
         <div className="flex flex-col">
           {filtered.length === 0 ? (
-            <p className="text-text-muted py-8">No posts found.</p>
+            <p className="blog-text-muted py-8">No posts found.</p>
           ) : (
             filtered.map((post) => (
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
-                className="group py-5 border-b border-border first:border-t"
+                className="group py-5 border-b blog-border first:border-t"
               >
                 <div className="flex items-baseline justify-between gap-4">
-                  <h2 className="font-heading text-lg font-medium text-foreground group-hover:text-brand-purple transition-colors">
+                  <h2 className="font-heading text-lg font-medium blog-title transition-colors">
                     {post.title}
                   </h2>
-                  <time className="text-sm text-text-muted whitespace-nowrap font-mono">
+                  <time className="text-sm blog-text-muted whitespace-nowrap font-mono">
                     {formatDate(post.date)}
                   </time>
                 </div>
-                <p className="text-text-secondary text-sm mt-1.5 line-clamp-2">
+                <p className="blog-text-secondary text-sm mt-1.5 line-clamp-2">
                   {post.description}
                 </p>
               </Link>

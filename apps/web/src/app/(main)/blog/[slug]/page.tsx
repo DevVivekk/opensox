@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllSlugs, getPostBySlug } from "@/lib/blog";
 import type { Metadata } from "next";
+import BlogThemeSelector from "../blog-theme";
 
 export async function generateStaticParams() {
   return getAllSlugs().map((slug) => ({ slug }));
@@ -39,20 +40,23 @@ export default async function BlogPostPage({
   });
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="blog-page min-h-screen">
       <article className="max-w-2xl mx-auto px-6 py-20">
-        <Link
-          href="/blog"
-          className="text-sm text-text-muted hover:text-foreground transition-colors"
-        >
-          &larr; Blog
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link
+            href="/blog"
+            className="text-sm blog-link transition-colors"
+          >
+            &larr; Blog
+          </Link>
+          <BlogThemeSelector />
+        </div>
 
         <header className="mt-8 mb-10">
           <h1 className="font-heading text-3xl sm:text-4xl font-bold leading-tight">
             {post.frontmatter.title}
           </h1>
-          <div className="flex items-center gap-3 mt-4 text-sm text-text-muted">
+          <div className="flex items-center gap-3 mt-4 text-sm blog-text-muted">
             <span>{post.frontmatter.author}</span>
             <span>&middot;</span>
             <time>{date}</time>
@@ -65,12 +69,12 @@ export default async function BlogPostPage({
         />
 
         {post.frontmatter.tweetUrl && (
-          <div className="mt-12 pt-8 border-t border-border">
+          <div className="mt-12 pt-8 border-t blog-border">
             <Link
               href={post.frontmatter.tweetUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm border border-border rounded-full text-text-muted hover:text-foreground hover:border-text-muted transition-colors"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm border rounded-full blog-link transition-colors"
             >
               View original thread on X &rarr;
             </Link>
