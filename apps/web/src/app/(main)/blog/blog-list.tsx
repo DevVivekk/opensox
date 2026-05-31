@@ -102,7 +102,7 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
           )}
         </div>
 
-        <div className="mt-12 pt-8 border-t blog-border">
+        <div className="mt-12">
           <BlogSocials />
         </div>
       </div>
