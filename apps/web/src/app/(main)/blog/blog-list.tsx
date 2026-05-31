@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { BlogMeta, BlogTag } from "@/lib/blog";
 import BlogThemeSelector from "./blog-theme";
+import BlogSocials from "./blog-socials";
 
 const tags: BlogTag[] = ["engineering", "startup", "distribution", "misc"];
 
@@ -26,7 +27,7 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
 
   return (
     <main className="blog-page min-h-screen">
-      <div className="max-w-2xl mx-auto px-6 py-20">
+      <div className="max-w-4xl mx-auto px-6 py-20">
         <header className="mb-12">
           <div className="flex items-center justify-between">
             <Link
@@ -37,7 +38,7 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
             </Link>
             <BlogThemeSelector />
           </div>
-          <h1 className="font-heading text-4xl font-bold mt-6">
+          <h1 className="font-heading text-3xl lg:text-4xl font-semibold mt-6">
             Opensox Blog
           </h1>
           <p className="blog-text-secondary mt-2">
@@ -86,7 +87,7 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
                 className="group py-5 border-b blog-border first:border-t"
               >
                 <div className="flex items-baseline justify-between gap-4">
-                  <h2 className="font-heading text-lg font-medium blog-title transition-colors">
+                  <h2 className="font-heading text-lg font-semibold blog-title transition-colors">
                     {post.title}
                   </h2>
                   <time className="text-sm blog-text-muted whitespace-nowrap font-mono">
@@ -99,6 +100,10 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
               </Link>
             ))
           )}
+        </div>
+
+        <div className="mt-12 pt-8 border-t blog-border">
+          <BlogSocials />
         </div>
       </div>
     </main>

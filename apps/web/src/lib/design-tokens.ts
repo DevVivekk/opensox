@@ -152,6 +152,7 @@ export const shadows = {
 export const fonts = {
   sans: "var(--font-geist-sans)",
   mono: "var(--font-dm-mono)",
+  heading: "Helvetica Neue, Helvetica, Arial, sans-serif",
 } as const;
 
 /**

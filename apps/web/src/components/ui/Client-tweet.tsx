@@ -51,6 +51,33 @@ export const truncate = (str: string | null, length: number) => {
   return `${str.slice(0, length - 3)}...`;
 };
 
+const isIterableArray = (value: unknown): value is unknown[] =>
+  Array.isArray(value);
+
+export const isValidTweet = (tweet: unknown): tweet is Tweet => {
+  if (!tweet || typeof tweet !== "object") return false;
+
+  const t = tweet as Tweet;
+
+  if (typeof t.text !== "string") return false;
+  if (!t.user || typeof t.user !== "object") return false;
+  if (typeof t.user.screen_name !== "string") return false;
+  if (!Array.isArray(t.display_text_range) || t.display_text_range.length !== 2) {
+    return false;
+  }
+
+  const { entities } = t;
+  if (!entities || typeof entities !== "object") return false;
+
+  // enrichTweet iterates these without null checks
+  return [
+    entities.hashtags,
+    entities.user_mentions,
+    entities.urls,
+    entities.symbols,
+  ].every(isIterableArray);
+};
+
 const Skeleton = ({
   className,
   ...props
@@ -147,7 +174,7 @@ export const TweetHeader = ({ tweet }: { tweet: EnrichedTweet }) => (
 
 export const TweetBody = ({ tweet }: { tweet: EnrichedTweet }) => (
   <div className="break-words leading-normal tracking-tighter">
-    {tweet.entities.map((entity, idx) => {
+    {(tweet.entities ?? []).map((entity, idx) => {
       switch (entity.type) {
         case "url":
         case "symbol":
@@ -178,26 +205,29 @@ export const TweetBody = ({ tweet }: { tweet: EnrichedTweet }) => (
 );
 
 export const TweetMedia = ({ tweet }: { tweet: EnrichedTweet }) => {
-  if (!tweet.video && !tweet.photos) return null;
+  const photos = tweet.photos ?? [];
+  const videoVariant = tweet.video?.variants?.[0];
+
+  if (!videoVariant && photos.length === 0) return null;
   return (
     <div className="flex flex-1 items-center justify-center">
-      {tweet.video && (
+      {videoVariant && (
         <video
-          poster={tweet.video.poster}
+          poster={tweet.video?.poster}
           autoPlay
           loop
           muted
           playsInline
           className="rounded-xl border shadow-sm"
         >
-          <source src={tweet.video.variants[0].src} type="video/mp4" />
+          <source src={videoVariant.src} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       )}
-      {tweet.photos && (
+      {photos.length > 0 && (
         <div className="relative flex transform-gpu snap-x snap-mandatory gap-4 overflow-x-auto">
           <div className="shrink-0 snap-center sm:w-2" />
-          {tweet.photos.map((photo) => (
+          {photos.map((photo) => (
             <img
               key={photo.url}
               src={photo.url}
@@ -209,8 +239,8 @@ export const TweetMedia = ({ tweet }: { tweet: EnrichedTweet }) => {
           <div className="shrink-0 snap-center sm:w-2" />
         </div>
       )}
-      {!tweet.video &&
-        !tweet.photos &&
+      {!videoVariant &&
+        photos.length === 0 &&
         // @ts-expect-error expected
         tweet?.card?.binding_values?.thumbnail_image_large?.image_value.url && (
           <img
@@ -229,13 +259,27 @@ export const TweetMedia = ({ tweet }: { tweet: EnrichedTweet }) => {
 export const MagicTweet = ({
   tweet,
   className,
+  components,
   ...props
 }: {
   tweet: Tweet;
   components?: TwitterComponents;
   className?: string;
 }) => {
-  const enrichedTweet = enrichTweet(tweet);
+  if (!isValidTweet(tweet)) {
+    const NotFound = components?.TweetNotFound || TweetNotFound;
+    return <NotFound className={className} {...props} />;
+  }
+
+  let enrichedTweet: EnrichedTweet;
+  try {
+    enrichedTweet = enrichTweet(tweet);
+  } catch (err) {
+    console.error(err);
+    const NotFound = components?.TweetNotFound || TweetNotFound;
+    return <NotFound className={className} {...props} />;
+  }
+
   return (
     <div
       className={cn(
@@ -273,14 +317,14 @@ export const TweetCard = async ({
     })
     : undefined;
 
-  if (!tweet) {
+  if (!tweet || !isValidTweet(tweet)) {
     const NotFound = components?.TweetNotFound || TweetNotFound;
     return <NotFound {...props} />;
   }
 
   return (
     <Suspense fallback={fallback}>
-      <MagicTweet tweet={tweet} {...props} />
+      <MagicTweet tweet={tweet} components={components} {...props} />
     </Suspense>
   );
 };

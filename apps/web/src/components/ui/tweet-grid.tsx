@@ -9,13 +9,14 @@ export interface TweetGridProps {
 }
 
 export const TweetGrid: React.FC<TweetGridProps> = ({
-  tweets,
+  tweets = [],
   className,
   speed = "normal",
 }) => {
-  const midpoint = Math.ceil(tweets.length / 2);
-  const topRowTweets = tweets.slice(0, midpoint);
-  const bottomRowTweets = tweets.slice(midpoint);
+  const safeTweets = tweets ?? [];
+  const midpoint = Math.ceil(safeTweets.length / 2);
+  const topRowTweets = safeTweets.slice(0, midpoint);
+  const bottomRowTweets = safeTweets.slice(midpoint);
 
   const getTweetsAnimationDuration = (numTweets: number) => {
     const baseSpeed = {
