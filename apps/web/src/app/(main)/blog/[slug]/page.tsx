@@ -35,6 +35,7 @@ export default async function BlogPostPage({
     month: "long",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC",
   });
 
   return (

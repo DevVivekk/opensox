@@ -12,6 +12,7 @@ function formatDate(dateStr: string): string {
     month: "short",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC",
   });
 }
 
@@ -44,6 +45,7 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
         <div className="flex gap-2 mb-10 flex-wrap">
           <button
             onClick={() => setActiveTag(null)}
+            aria-pressed={activeTag === null}
             className={`px-3 py-1 text-sm rounded-full border transition-colors ${
               activeTag === null
                 ? "border-brand-purple text-brand-purple"
@@ -56,6 +58,7 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
             <button
               key={tag}
               onClick={() => setActiveTag(tag)}
+              aria-pressed={activeTag === tag}
               className={`px-3 py-1 text-sm rounded-full border transition-colors capitalize ${
                 activeTag === tag
                   ? "border-brand-purple text-brand-purple"

@@ -31,15 +31,15 @@ so my objectives were :
 
 how i fixed it:
 
-> created a central `design-token.ts` to contain all the variables for ui - colors, fonts, sizes, backgrounds, etc
+> created a central `design-tokens.ts` to contain all the variables for ui - colors, fonts, sizes, backgrounds, etc
 
-> configured `tailwind.config.ts` to import all the values from `design-token.ts` file to use them as class utilities.
+> configured `tailwind.config.ts` to import all the values from `design-tokens.ts` file to use them as class utilities.
 
 > now the hard part - migration
 
 > migrated page by page - first /legal, then /dashboard, and finally /landing
 
-> added a rule in `.cursorrules` to always follow the design pattern mentioned in `design-token.ts` and `tailwind.config.ts`
+> added a rule in `.cursorrules` to always follow the design pattern mentioned in `design-tokens.ts` and `tailwind.config.ts`
 
 > also, i created a separate `backgroundDash: {}` object for the colors for /dashboard only because i don't wanna mess up with the colors of the /landing page
 
