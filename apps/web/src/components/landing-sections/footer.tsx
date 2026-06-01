@@ -86,10 +86,10 @@ const Footer = () => {
                   My pitch to you
                 </Link>
                 <Link
-                  href="/blogs"
+                  href="/blog"
                   className="text-[#b1b1b1] hover:text-white transition-colors text-xs"
                 >
-                  Blogs
+                  Blog
                 </Link>
                 <Link
                   href="https://github.com/apsinghdev/opensox/graphs/contributors"

@@ -1,0 +1,62 @@
+---
+title: "How to Make Your Website Design Consistent?"
+date: "2025-11-19"
+description: "Tips for keeping your UI clean and consistent."
+author: "Ajeet"
+tag: "engineering"
+tweetUrl: "https://x.com/ajeetunc/status/1991106654247743717"
+---
+
+"why the fuck is my Payment button more purple than the Find button?"
+
+"why does my website have 5 different fonts?"
+
+"why does my website have 3 different background colors?"
+
+"why does UI of my website sucks?"
+
+it was me before enforcing "design consistency" in my product.
+
+so my objectives were :
+
+> to remove irregularities in colors, typography, etc, throughout the website
+
+> to have a central file/state for the whole brand design and all the components and ui should use that central state
+
+> avoid writing hard-coded hex codes in css classes (violation of DIY)
+
+> make whole website follow consistent design - colors, spaces, fonts, borders, etc
+
+> make it less painful to make changes in the ui later.
+
+how i fixed it:
+
+> created a central `design-tokens.ts` to contain all the variables for ui - colors, fonts, sizes, backgrounds, etc
+
+> configured `tailwind.config.ts` to import all the values from `design-tokens.ts` file to use them as class utilities.
+
+> now the hard part - migration
+
+> migrated page by page - first /legal, then /dashboard, and finally /landing
+
+> added a rule in `.cursorrules` to always follow the design pattern mentioned in `design-tokens.ts` and `tailwind.config.ts`
+
+> also, i created a separate `backgroundDash: {}` object for the colors for /dashboard only because i don't wanna mess up with the colors of the /landing page
+
+so what ive achieved doing this? :
+
+> consistent colors and typography throughout the codebase
+
+> a central state - `design-tokens.ts` - that whole ui follows
+
+> single source of truth
+
+> now it takes seconds to change all the colors and fonts of a page instead of hours.
+
+> no more "more purple", "less purple", kind of consistencies.
+
+> cursor will follow the design pattern from now on.
+
+> peace of mind :)
+
+if you wanna read more, here's the [pr](https://github.com/apsinghdev/opensox/pull/193).
