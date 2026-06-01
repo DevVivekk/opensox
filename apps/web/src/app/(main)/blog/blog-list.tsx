@@ -38,7 +38,7 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
             </Link>
             <BlogThemeSelector />
           </div>
-          <h1 className="font-heading text-3xl lg:text-4xl font-semibold mt-6">
+          <h1 className="font-['Helvetica'] tracking-tight text-3xl lg:text-4xl font-semibold mt-6">
             Opensox Blog
           </h1>
           <p className="blog-text-secondary mt-2">
@@ -87,7 +87,7 @@ export default function BlogList({ posts }: { posts: BlogMeta[] }) {
                 className="group py-5 border-b blog-border first:border-t"
               >
                 <div className="flex items-baseline justify-between gap-4">
-                  <h2 className="font-heading text-lg font-semibold blog-title transition-colors">
+                  <h2 className="font-['Helvetica'] tracking-tight text-lg font-semibold blog-title transition-colors">
                     {post.title}
                   </h2>
                   <time className="text-sm blog-text-muted whitespace-nowrap font-mono">

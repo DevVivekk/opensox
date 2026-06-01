@@ -54,7 +54,7 @@ export default async function BlogPostPage({
         </div>
 
         <header className="mt-8 mb-10">
-          <h1 className="font-heading text-3xl lg:text-4xl font-semibold leading-tight">
+          <h1 className="font-['Helvetica'] tracking-tight text-3xl lg:text-4xl font-semibold leading-tight">
             {post.frontmatter.title}
           </h1>
           <div className="flex items-center gap-3 mt-4 text-sm blog-text-muted">

@@ -77,10 +77,10 @@ html {
   @apply text-lg lg:text-xl leading-relaxed text-text-secondary font-medium;
 }
 .prose-blog h2 {
-  @apply font-heading text-2xl lg:text-3xl font-semibold text-foreground mt-10 mb-4;
+  @apply font-['Helvetica'] tracking-tight text-2xl lg:text-3xl font-semibold text-foreground mt-10 mb-4;
 }
 .prose-blog h3 {
-  @apply font-heading text-xl lg:text-2xl font-semibold text-foreground mt-8 mb-3;
+  @apply font-['Helvetica'] tracking-tight text-xl lg:text-2xl font-semibold text-foreground mt-8 mb-3;
 }
 .prose-blog p {
   @apply mb-5;
