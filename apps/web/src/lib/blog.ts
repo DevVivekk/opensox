@@ -58,13 +58,18 @@ export function getPostBySlug(slug: string): { frontmatter: BlogFrontmatter; htm
   const { data, content } = matter(raw);
   if (data.draft) return null;
   const rawHtml = marked.parse(content) as string;
-  const html = sanitizeHtml(rawHtml, {
+  const safeHtml = sanitizeHtml(rawHtml, {
     allowedTags: (sanitizeHtml as any).defaults.allowedTags.concat(["img"]),
     allowedAttributes: {
       ...(sanitizeHtml as any).defaults.allowedAttributes,
+      a: ["href", "name", "target", "rel"],
       img: ["src", "alt", "title", "width", "height", "loading"],
     },
   });
+  const html = safeHtml.replace(
+    /<a href="([^"]*)">/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">'
+  );
 
   return {
     frontmatter: data as BlogFrontmatter,

@@ -32,9 +32,17 @@ const Pitch = () => {
           <div className="py-8 border-b border-border px-4 lg:px-[60px]">
             <div className="max-w-4xl mx-auto space-y-8 text-text-secondary font-normal text-lg lg:text-xl">
               <p>
-                from my journey of open source, ive realized there&apos;re 4
-                biggest career destroying problems that someone who start their
-                tech journey faces.
+                from{" "}
+                <Link
+                  href="/blog/my-journey-of-open-source"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-link hover:text-link-hover underline"
+                >
+                  my journey of open source
+                </Link>
+                , i realized there are 4 of the biggest career-destroying
+                problems that someone who starts their tech journey faces.
               </p>
 
               <div className="space-y-4">
@@ -44,14 +52,14 @@ const Pitch = () => {
                 <p>my definition of exposure is &quot;knowing what&apos;s possible&quot;.</p>
                 <p>when i started open source i didn&apos;t even know what&apos;s possible.</p>
                 <p>
-                  hence i made wrong decisions and wasted lots of time and
-                  efforts.
+                  hence i made wrong decisions and wasted a lot of time and
+                  effort.
                 </p>
                 <p>same thing happens with everyone who starts with open source.</p>
                 <p>
                   if you don&apos;t know what&apos;s possible, you won&apos;t be
                   able to even try something worthy no matter how talented,
-                  smart or hard working you are.
+                  smart, or hardworking you are.
                 </p>
               </div>
 
@@ -62,14 +70,14 @@ const Pitch = () => {
                 <p>getting the exposure is sometimes easy.</p>
                 <p>
                   i joined twitter and made lots of good friends there and that
-                  way i was able to get the exposure of outer world.
+                  way i was able to get exposure to the outer world.
                 </p>
                 <p>but i was still trying alone.</p>
                 <p>
                   trial and error. if i made a mistake, i didn&apos;t realize
-                  till i face the painful consequences of it.
+                  it until i faced the painful consequences.
                 </p>
-                <p>and that&apos;s the problem with almost all the college students.</p>
+                <p>and that&apos;s the problem with almost all college students.</p>
                 <p>
                   there&apos;s no way someone or something can tell them
                   &quot;hey, this decision you took may not be very good because
@@ -87,7 +95,7 @@ const Pitch = () => {
                 <p>
                   nikola tesla died as a poor scientist in a small compartment
                   while thomas edison enjoyed money throughout his life and died
-                  while having $12M (today&apos;s value $263M) in his assets.
+                  with $12M (today&apos;s value $263M) in his assets.
                 </p>
                 <p>
                   not because thomas edison was smarter than nikola tesla but
@@ -103,7 +111,7 @@ const Pitch = () => {
                   second one.
                 </p>
                 <p>
-                  and soon enough they realize people less talented, less smart
+                  and soon enough they realize people who are less talented, less smart,
                   and less hardworking than them are getting salary hikes,
                   starting their own startups, raising VC capital, moving to SF,
                   retiring their parents, buying the dream house and car and
@@ -120,8 +128,8 @@ const Pitch = () => {
                   4. lack of problem solving
                 </h2>
                 <p>
-                  whenever the term &quot;problem solving&quot; comes, most
-                  people automatically assumes &quot;DSA&quot;,
+                  whenever the term &quot;problem solving&quot; comes up, most
+                  people automatically assume &quot;DSA&quot;,
                   &quot;Maths&quot;, &quot;Logic&quot;, etc.
                 </p>
                 <p>
@@ -129,26 +137,26 @@ const Pitch = () => {
                   the hood.
                 </p>
                 <p>
-                  fundamentally, there&apos;s only one problem solving skill.
-                  First Principles.
+                  fundamentally, there&apos;s only one problem-solving skill:
+                  first principles.
                 </p>
                 <p>
-                  first principles is the mother of every innovation we see
+                  first principles are the mother of every innovation we see
                   around us.
                 </p>
                 <p>
                   most college students don&apos;t even have basic critical
                   thinking.
                 </p>
-                <p>and AI and vibe coding has made it worse.</p>
+                <p>and AI and vibe coding have made it worse.</p>
                 <p>they can&apos;t ask a question properly (my DMs are the proof).</p>
                 <p>they can&apos;t implement a feature without using AI.</p>
                 <p>
-                  they can&apos;t learn a piece of tech without 11-hr-long
+                  they can&apos;t learn a piece of tech without an 11-hr-long
                   tutorial or blog.
                 </p>
                 <p>
-                  they can&apos;t build a project without looking at the
+                  they can&apos;t build a project without looking at a
                   tutorial.
                 </p>
                 <p>
@@ -162,20 +170,20 @@ const Pitch = () => {
                   so the goal of opensox is to help you eliminate these 4
                   problems from your life.
                 </h2>
-                <p>here's how.</p>
+                <p>here&apos;s how.</p>
                 <ul className="space-y-3 list-disc pl-6">
                   <li>
-                    onboarding call. with me. to set up the direction. for ur
+                    onboarding call. with me. to set up the direction. for your
                     goals in open source.
                   </li>
                   <li>
                     feedback and guidance on <strong>anything related to open source</strong>.
-                    be it programms like GSoC, LFX, Summer of Bitcoin or remote
+                    be it programs like GSoC, LFX, Summer of Bitcoin or remote
                     jobs and internships at commercial open source startups.
                   </li>
                   <li>
                     a highly active, small token, limited community. full of
-                    cracked engineers. where you get personal attention of me.
+                    cracked engineers. where you get personal attention from me.
                     24 * 7 * 365.
                   </li>
                   <li>weekly live sessions. on the topics of your choice.</li>
@@ -189,12 +197,12 @@ const Pitch = () => {
                   </li>
                   <li>
                     dedicated content. on open source. build in public. first
-                    principles. that you can&apos;t find anywhere else over the
-                    internet. only for the opensox pro members.
+                    principles. that you can&apos;t find anywhere else on the
+                    internet. only for opensox pro members.
                   </li>
                   <li>
-                    hand picked open source projects. cut the BS. and
-                    contribute from the day 1.
+                    hand-picked open source projects. cut the BS. and
+                    contribute from day 1.
                   </li>
                   <li>
                     recordings of all the previous weekly sessions. organized by
@@ -205,7 +213,7 @@ const Pitch = () => {
                     latest updates. on anything related to open source, jobs,
                     tech, etc.
                   </li>
-                  <li>daily stand ups. for accountability.</li>
+                  <li>daily stand-ups. for accountability.</li>
                   <li>
                     anything else that i learn. do. find valuable. i share. with
                     my people.
@@ -223,12 +231,20 @@ const Pitch = () => {
 
               <div className="border-t border-border pt-8 space-y-4">
                 <h2 className="text-2xl lg:text-3xl font-bold text-brand-purple-light tracking-tight leading-tight [font-family:Helvetica,Arial,sans-serif]">
-                  but how will you be able give personal attention and do all
-                  of that if the number of opensox pro members grow in future?
+                  but how will you be able to give personal attention and do all
+                  of that if the number of opensox pro members grows in the future?
                 </h2>
                 <p>
-                  i thought about this a lot. and made a hard decision to stay
-                  small.
+                  i thought about this a lot. and made a hard decision to{" "}
+                  <Link
+                    href="/blog/stay-small"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-link hover:text-link-hover underline"
+                  >
+                    stay small
+                  </Link>
+                  .
                 </p>
                 <p>how small?</p>
                 <p className="text-brand-purple-light">177 people. a month. only.</p>
@@ -239,8 +255,8 @@ const Pitch = () => {
                 </p>
                 <p>10% of the members are highly active.</p>
                 <p>30% are active.</p>
-                <p>40% are ocasionally active.</p>
-                <p>and rest 20% join for the sake of hobby.</p>
+                <p>40% are occasionally active.</p>
+                <p>and the rest 20% join as a hobby.</p>
                 <p>they&apos;re already professionals in something else.</p>
                 <p>
                   so 177 is the number i can manage. and give you my personal
@@ -255,8 +271,8 @@ const Pitch = () => {
                 <p>
                   opensox pro isn&apos;t a course or program where 100
                   pre-recorded videos will be thrown at you and you&apos;ll be
-                  required to watch and later on you receive a certificate to
-                  add in your linkedin.
+                  required to watch and later receive a certificate to
+                  add to your linkedin.
                 </p>
                 <p>
                   opensox pro is a small and effective ecosystem for limited
@@ -268,16 +284,16 @@ const Pitch = () => {
                 </p>
                 <p>
                   here you&apos;re not taught the technologies like the syllabus
-                  of class 10th but you engage in methods to learn the a
+                  of class 10th but you engage in methods to learn a
                   technology on your own.
                 </p>
-                <p>like how a true engineer does.</p>
+                <p>the way a true engineer does.</p>
                 <p>
-                  here the community provokes you to put the best efforts of
+                  here the community pushes you to put in the best efforts of
                   your life.
                 </p>
                 <p>
-                  here the obsession drives the people not a fixed class
+                  here obsession drives people, not a fixed class
                   schedule.
                 </p>
               </div>
