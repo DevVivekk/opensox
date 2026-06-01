@@ -74,13 +74,17 @@ html {
 
 /* page titles: /blog index h1 + individual post article title */
 .blog-heading {
+
   @apply text-4xl lg:text-5xl font-bold tracking-tight leading-tight;
+
   font-family: Helvetica, Arial, sans-serif;
 }
 
 /* post titles on /blog list only */
 .blog-list-title {
+
   @apply text-2xl lg:text-3xl font-bold tracking-tight leading-tight;
+
   font-family: Helvetica, Arial, sans-serif;
 }
 
@@ -179,6 +183,7 @@ html {
   --blog-link: #60a5fa;
   --blog-link-hover: #93c5fd;
   --blog-purple: #5519f7;
+
   background-color: var(--blog-bg) !important;
   color: var(--blog-fg) !important;
 }

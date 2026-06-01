@@ -6,6 +6,29 @@ import sanitizeHtml from "sanitize-html";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 
+function withExternalLinkTargets(html: string): string {
+  return html.replace(/<a\b([^>]*)>/gi, (full, attrs) => {
+    const href = attrs.match(/\bhref="([^"]*)"/i)?.[1];
+    if (!href) return full;
+
+    const isExternal =
+      /^https?:\/\//i.test(href) || href.startsWith("//");
+    if (!isExternal || /\btarget\s*=/i.test(attrs)) return full;
+
+    let next = attrs.trim();
+    if (!/\brel\s*=/i.test(next)) {
+      next += ' rel="noopener noreferrer"';
+    } else if (!/noopener/i.test(next)) {
+      next = next.replace(
+        /\brel="([^"]*)"/i,
+        (_: string, rel: string) => `rel="${rel} noopener noreferrer"`
+      );
+    }
+    next += ' target="_blank"';
+    return `<a ${next}>`;
+  });
+}
+
 export type BlogTag = "engineering" | "startup" | "distribution" | "misc";
 
 export interface BlogFrontmatter {
@@ -66,10 +89,7 @@ export function getPostBySlug(slug: string): { frontmatter: BlogFrontmatter; htm
       img: ["src", "alt", "title", "width", "height", "loading"],
     },
   });
-  const html = safeHtml.replace(
-    /<a href="([^"]*)">/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer">'
-  );
+  const html = withExternalLinkTargets(safeHtml);
 
   return {
     frontmatter: data as BlogFrontmatter,
