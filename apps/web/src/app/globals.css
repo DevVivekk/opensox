@@ -72,21 +72,37 @@ html {
   scroll-behavior: smooth;
 }
 
+/* page titles: /blog index h1 + individual post article title */
+.blog-heading {
+
+  @apply text-4xl lg:text-5xl font-bold tracking-tight leading-tight;
+
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+/* post titles on /blog list only */
+.blog-list-title {
+
+  @apply text-2xl lg:text-3xl font-bold tracking-tight leading-tight;
+
+  font-family: Helvetica, Arial, sans-serif;
+}
+
 /* Blog post prose */
 .prose-blog {
   @apply text-lg lg:text-xl leading-relaxed text-text-secondary font-medium;
 }
 .prose-blog h2 {
-  @apply font-['Helvetica'] tracking-tight text-2xl lg:text-3xl font-semibold text-foreground mt-10 mb-4;
+  @apply font-['Helvetica'] tracking-tight text-xl lg:text-2xl font-semibold mt-10 mb-4;
 }
 .prose-blog h3 {
-  @apply font-['Helvetica'] tracking-tight text-xl lg:text-2xl font-semibold text-foreground mt-8 mb-3;
+  @apply font-['Helvetica'] tracking-tight text-lg lg:text-xl font-semibold mt-8 mb-3;
 }
 .prose-blog p {
   @apply mb-5;
 }
 .prose-blog a {
-  @apply text-brand-purple-light underline underline-offset-2 hover:text-foreground transition-colors;
+  @apply text-link underline underline-offset-2 hover:text-link-hover transition-colors;
 }
 .prose-blog strong {
   @apply font-semibold text-foreground;
@@ -130,7 +146,8 @@ html {
   --blog-muted: #666666;
   --blog-border: #e0e0e0;
   --blog-surface: #f0f0f0;
-  --blog-link: #5519f7;
+  --blog-link: #60a5fa;
+  --blog-link-hover: #93c5fd;
   --blog-purple: #5519f7;
 }
 [data-blog-theme="sepia"] .blog-page {
@@ -140,7 +157,8 @@ html {
   --blog-muted: #8a7560;
   --blog-border: #d4c5a9;
   --blog-surface: #e8dcc8;
-  --blog-link: #7a4e1e;
+  --blog-link: #60a5fa;
+  --blog-link-hover: #93c5fd;
   --blog-purple: #7a4e1e;
 }
 [data-blog-theme="green"] .blog-page {
@@ -150,31 +168,33 @@ html {
   --blog-muted: #5a7253;
   --blog-border: #b5ccb0;
   --blog-surface: #c5d9c1;
-  --blog-link: #2d5a27;
+  --blog-link: #60a5fa;
+  --blog-link-hover: #93c5fd;
   --blog-purple: #2d5a27;
 }
-[data-blog-theme="dark"] .blog-page {
+/* dark is the default blog theme; other themes override via data-blog-theme on <html> */
+.blog-page {
   --blog-bg: #101010;
   --blog-fg: #ffffff;
   --blog-text: #e1e1e1;
   --blog-muted: #a1a1a1;
   --blog-border: #252525;
   --blog-surface: #1e1e1e;
-  --blog-link: #8a5cf4;
+  --blog-link: #60a5fa;
+  --blog-link-hover: #93c5fd;
   --blog-purple: #5519f7;
-}
-.blog-page {
-  background-color: var(--blog-bg, #101010) !important;
-  color: var(--blog-fg, #ffffff) !important;
+
+  background-color: var(--blog-bg) !important;
+  color: var(--blog-fg) !important;
 }
 .blog-page .blog-text-secondary {
-  color: var(--blog-text, #e1e1e1);
+  color: var(--blog-text);
 }
 .blog-page .blog-text-muted {
-  color: var(--blog-muted, #a1a1a1);
+  color: var(--blog-muted);
 }
 .blog-page .blog-border {
-  border-color: var(--blog-border, #252525);
+  border-color: var(--blog-border);
 }
 .blog-page .blog-link {
   color: var(--blog-muted);
@@ -189,12 +209,17 @@ html {
   border-color: var(--blog-purple);
 }
 .blog-page .group:hover .blog-title {
-  color: var(--blog-purple);
+  color: var(--blog-fg);
+  opacity: 0.85;
 }
 
 /* Prose overrides for blog themes */
 .blog-page .prose-blog {
   color: var(--blog-text);
+}
+.blog-page .blog-heading,
+.blog-page .blog-list-title {
+  color: var(--blog-fg);
 }
 .blog-page .prose-blog h2,
 .blog-page .prose-blog h3 {
@@ -205,9 +230,12 @@ html {
 }
 .blog-page .prose-blog a {
   color: var(--blog-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
 }
 .blog-page .prose-blog a:hover {
-  color: var(--blog-fg);
+  color: var(--blog-link-hover);
 }
 .blog-page .prose-blog blockquote {
   border-color: var(--blog-border);
@@ -226,9 +254,9 @@ html {
 /* Blog theme dropdown */
 .blog-theme-select {
   appearance: none;
-  background-color: var(--blog-surface, #1e1e1e);
-  color: var(--blog-muted, #a1a1a1);
-  border: 1px solid var(--blog-border, #252525);
+  background-color: var(--blog-surface);
+  color: var(--blog-muted);
+  border: 1px solid var(--blog-border);
   padding: 0.25rem 1.5rem 0.25rem 0.5rem;
   border-radius: 9999px;
   font-size: 0.75rem;
@@ -239,11 +267,11 @@ html {
   background-position: right 0.4rem center;
 }
 .blog-theme-select:hover {
-  color: var(--blog-fg, #ffffff);
-  border-color: var(--blog-muted, #a1a1a1);
+  color: var(--blog-fg);
+  border-color: var(--blog-muted);
 }
 .blog-theme-select option {
-  background-color: var(--blog-surface, #1e1e1e);
-  color: var(--blog-fg, #ffffff);
+  background-color: var(--blog-surface);
+  color: var(--blog-fg);
 }
 

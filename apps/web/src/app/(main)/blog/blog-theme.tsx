@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 
 const themes = [
   { id: "dark", label: "Dark" },
@@ -22,7 +22,7 @@ function getSavedTheme(): ThemeId {
 export default function BlogThemeSelector() {
   const [theme, setTheme] = useState<ThemeId>(getSavedTheme);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.setAttribute("data-blog-theme", theme);
     localStorage.setItem("blog-theme", theme);
     return () => {

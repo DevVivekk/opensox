@@ -6,6 +6,41 @@ import sanitizeHtml from "sanitize-html";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 
+function hardenExternalLinkRel(attrs: string): string {
+  if (!/\brel\s*=/i.test(attrs)) {
+    return `${attrs} rel="noopener noreferrer"`;
+  }
+
+  return attrs.replace(/\brel="([^"]*)"/i, (_match, rel: string) => {
+    const tokens = new Set(
+      rel
+        .trim()
+        .split(/\s+/)
+        .filter((token: string) => token.length > 0)
+    );
+    tokens.add("noopener");
+    tokens.add("noreferrer");
+    return `rel="${[...tokens].join(" ")}"`;
+  });
+}
+
+function withExternalLinkTargets(html: string): string {
+  return html.replace(/<a\b([^>]*)>/gi, (full, attrs) => {
+    const href = attrs.match(/\bhref="([^"]*)"/i)?.[1];
+    if (!href) return full;
+
+    const isExternal =
+      /^https?:\/\//i.test(href) || href.startsWith("//");
+    if (!isExternal) return full;
+
+    let next = hardenExternalLinkRel(attrs.trim());
+    if (!/\btarget\s*=/i.test(next)) {
+      next += ' target="_blank"';
+    }
+    return `<a ${next}>`;
+  });
+}
+
 export type BlogTag = "engineering" | "startup" | "distribution" | "misc";
 
 export interface BlogFrontmatter {
@@ -58,13 +93,15 @@ export function getPostBySlug(slug: string): { frontmatter: BlogFrontmatter; htm
   const { data, content } = matter(raw);
   if (data.draft) return null;
   const rawHtml = marked.parse(content) as string;
-  const html = sanitizeHtml(rawHtml, {
+  const safeHtml = sanitizeHtml(rawHtml, {
     allowedTags: (sanitizeHtml as any).defaults.allowedTags.concat(["img"]),
     allowedAttributes: {
       ...(sanitizeHtml as any).defaults.allowedAttributes,
+      a: ["href", "name", "target", "rel"],
       img: ["src", "alt", "title", "width", "height", "loading"],
     },
   });
+  const html = withExternalLinkTargets(safeHtml);
 
   return {
     frontmatter: data as BlogFrontmatter,
