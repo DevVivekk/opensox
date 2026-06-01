@@ -6,6 +6,24 @@ import sanitizeHtml from "sanitize-html";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
 
+function hardenExternalLinkRel(attrs: string): string {
+  if (!/\brel\s*=/i.test(attrs)) {
+    return `${attrs} rel="noopener noreferrer"`;
+  }
+
+  return attrs.replace(/\brel="([^"]*)"/i, (_match, rel: string) => {
+    const tokens = new Set(
+      rel
+        .trim()
+        .split(/\s+/)
+        .filter((token: string) => token.length > 0)
+    );
+    tokens.add("noopener");
+    tokens.add("noreferrer");
+    return `rel="${[...tokens].join(" ")}"`;
+  });
+}
+
 function withExternalLinkTargets(html: string): string {
   return html.replace(/<a\b([^>]*)>/gi, (full, attrs) => {
     const href = attrs.match(/\bhref="([^"]*)"/i)?.[1];
@@ -13,18 +31,12 @@ function withExternalLinkTargets(html: string): string {
 
     const isExternal =
       /^https?:\/\//i.test(href) || href.startsWith("//");
-    if (!isExternal || /\btarget\s*=/i.test(attrs)) return full;
+    if (!isExternal) return full;
 
-    let next = attrs.trim();
-    if (!/\brel\s*=/i.test(next)) {
-      next += ' rel="noopener noreferrer"';
-    } else if (!/noopener/i.test(next)) {
-      next = next.replace(
-        /\brel="([^"]*)"/i,
-        (_: string, rel: string) => `rel="${rel} noopener noreferrer"`
-      );
+    let next = hardenExternalLinkRel(attrs.trim());
+    if (!/\btarget\s*=/i.test(next)) {
+      next += ' target="_blank"';
     }
-    next += ' target="_blank"';
     return `<a ${next}>`;
   });
 }
