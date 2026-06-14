@@ -45,7 +45,6 @@ export default function BlogThemeSelector() {
 
   return () => {
     media.removeEventListener("change", handleChange);
-    document.documentElement.removeAttribute("data-blog-theme");
   };
 }, []);
 
