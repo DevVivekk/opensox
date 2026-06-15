@@ -30,10 +30,12 @@ export default function BlogThemeSelector() {
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-blog-theme", theme);
     localStorage.setItem("blog-theme", theme);
-    //no cleanup required here
+    return ()=>{
+      document.documentElement.removeAttribute("data-blog-theme");
+    }
   }, [theme]);
 
-  //UseEffect to handle the system theme changes
+  //useEffect to handle the system theme changes
   useEffect(() => {
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   const handleChange = () => {
