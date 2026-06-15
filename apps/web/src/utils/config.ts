@@ -28,20 +28,6 @@ export const projectsOfTheWeek = [
     activity: "Highest",
   },
   {
-    id: "2",
-    name: "awesome-sass",
-    description:
-      "Collection of templates using the Alchemyst AI Platform for your next big AI app.",
-    url: "https://github.com/Alchemyst-ai/awesome-saas",
-    avatarUrl: "https://avatars.githubusercontent.com/u/155486959?s=48&v=4",
-    totalIssueCount: 22,
-    primaryLanguage: "Typescript",
-    popularity: "Highest",
-    stage: "Established",
-    competition: "High",
-    activity: "Highest",
-  },
-  {
     id: "3",
     name: "openchangelog",
     description: "Easy to configure & self hostable Changelog Website",
@@ -148,19 +134,5 @@ export const projectsOfTheWeek = [
     stage: "Very early",
     competition: "Very low",
     activity: "Highest",
-  },
-  {
-    id: "11",
-    name: "Gsoc-Orgs",
-    description:
-      "Making GSOC journey easier. Helping select orgs, projects, tech-stack for GSOC to increase your chances of getting selected.",
-    url: "https://github.com/ketankauntia/gsoc-orgs",
-    avatarUrl: "https://avatars.githubusercontent.com/u/44080191?s=48&v=4",
-    totalIssueCount: 11,
-    primaryLanguage: "Typescript",
-    popularity: "Low",
-    stage: "Very early",
-    competition: "Very low",
-    activity: "Normal",
   },
 ];
