@@ -74,7 +74,7 @@ export default function ProjectsContainer({
     <div className="w-full p-6 sm:p-6">
       {isProjectsPage && showLegacyBanner && (
         <div className="mb-6 flex items-start gap-3 rounded-lg border border-dash-border bg-ox-content px-4 py-3">
-          <InformationCircleIcon className="mt-0.5 size-5 shrink-0 text-brand-purple" />
+          <InformationCircleIcon className="mt-0.5 size-4 shrink-0 text-brand-purple" />
           <p className="flex-1 text-sm text-text-muted">
             This is a legacy feature of Opensox.{" "}
             <Link
