@@ -156,11 +156,23 @@ export default function ProjectsContainer({
             </TableHeader>
 
             <TableBody>
-              {projects.map((p) => (
+              {projects.map((p) => {
+                const openProject = () =>
+                  window.open(p.url, "_blank", "noopener,noreferrer");
+                return (
                 <TableRow
                   key={p.id}
-                  className="group border-b border-ox-gray/60 cursor-pointer hover:bg-brand-purple/5 transition-colors"
-                  onClick={() => window.open(p.url, "_blank")}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Open ${p.name} on GitHub`}
+                  className="group border-b border-ox-gray/60 cursor-pointer hover:bg-brand-purple/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/50"
+                  onClick={openProject}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openProject();
+                    }
+                  }}
                 >
                   <TableCell className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
@@ -206,7 +218,8 @@ export default function ProjectsContainer({
                     {p.activity}
                   </TableCell>
                 </TableRow>
-              ))}
+                );
+              })}
             </TableBody>
           </Table>
         </div>
