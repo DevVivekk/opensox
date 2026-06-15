@@ -38,6 +38,11 @@ export default function BlogThemeSelector() {
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   const handleChange = () => {
     const systemTheme: ThemeId = media.matches ? "dark" : "light";
+    const currTheme = localStorage.getItem("blog-theme") || systemTheme;
+    //check the current theme if it is sepia or green then no need to perform the system theme changes
+    if (currTheme === "sepia" || currTheme === "green") {
+        return;
+    }
     setTheme(systemTheme);
   };
 
