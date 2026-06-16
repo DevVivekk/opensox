@@ -79,7 +79,9 @@ export default function ProjectsContainer({
             This is a legacy feature of Opensox.{" "}
             <Link
               href={LEGACY_BLOG_PATH}
-              className="font-medium text-brand-purple underline-offset-2 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center font-medium text-text-primary bg-brand-purple px-2 py-0.5 rounded-md hover:bg-brand-purple-light transition-colors"
             >
               Here&apos;s more about it
             </Link>
@@ -107,7 +109,7 @@ export default function ProjectsContainer({
               variant="outline"
               className="gap-2 border-dash-border bg-transparent text-sm sm:text-base h-10 sm:h-11 px-4 sm:px-5 text-text-primary hover:bg-white/5 rounded-md"
             >
-              <Link href="/pricing">
+              <Link href="/pricing" target="_blank" rel="noopener noreferrer">
                 <SparklesIcon className="size-4 text-brand-purple" />
                 Get hand-picked OSS projects
               </Link>
@@ -139,13 +141,13 @@ export default function ProjectsContainer({
           <Table className="w-full min-w-[820px] table-fixed">
             {/* Sticky header row */}
             <TableHeader>
-              <TableRow className="border-b border-dash-border hover:bg-transparent">
+              <TableRow className="border-b border-brand-purple-dark hover:bg-transparent">
                 {tableColumns.map((name, i) => (
                   <TableHead
                     key={name}
                     className={[
-                      "px-4 py-3.5 font-semibold text-brand-purple text-[11px] sm:text-xs uppercase tracking-wider whitespace-nowrap",
-                      "sticky top-0 z-30 bg-ox-content", // <- stick
+                      "px-4 py-3.5 font-semibold text-text-primary text-[11px] sm:text-xs uppercase tracking-wider whitespace-nowrap",
+                      "sticky top-0 z-30 bg-brand-purple",
                       i === 0 ? "text-left w-[34%] min-w-[220px]" : "text-center",
                     ].join(" ")}
                   >
