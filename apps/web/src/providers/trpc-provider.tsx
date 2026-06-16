@@ -1,18 +1,27 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  QueryCache,
+  MutationCache,
+} from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import type { Session } from "next-auth";
 import superjson from "superjson";
 import { trpc } from "@/lib/trpc";
+import { handleAuthError } from "@/lib/auth/handle-auth-error";
 
 export function TRPCProvider({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
   const [queryClient] = useState(
     () =>
       new QueryClient({
+        // Send the user to login when their session expires (see handleAuthError).
+        queryCache: new QueryCache({ onError: handleAuthError }),
+        mutationCache: new MutationCache({ onError: handleAuthError }),
         defaultOptions: {
           queries: {
             staleTime: 60 * 1000, // 1 minute
