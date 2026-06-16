@@ -20,8 +20,10 @@ export function handleAuthError(error: unknown): void {
   if (!isAuthError(error)) return;
   if (isHandlingAuthError) return;
 
-  // Already on login, so there's nowhere to send them.
-  if (window.location.pathname.startsWith("/login")) return;
+  // Already on login, so there's nowhere to send them. Match the /login route
+  // itself (and its subpaths), not lookalikes like /login-help.
+  const { pathname } = window.location;
+  if (pathname === "/login" || pathname.startsWith("/login/")) return;
 
   isHandlingAuthError = true;
 
