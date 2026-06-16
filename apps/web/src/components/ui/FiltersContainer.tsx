@@ -19,10 +19,6 @@ import { useLoading } from "@/store/useLoadingStore";
 import { useProjectsNotFoundStore } from "@/store/useProjectsFoundStore";
 
 export default function FiltersContainer() {
-  const handleClickWipFilters = () => {
-    window.alert("🏗️ Coming very soon! :)");
-  };
-
   const { toggleShowFilters } = useFilterStore();
   const { setRenderProjects } = useRenderProjects();
   const { filters, resetFilters } = useFilterInputStore();
@@ -65,10 +61,10 @@ export default function FiltersContainer() {
       />
 
       {/* Filter Panel */}
-      <div className="fixed right-0 top-0 h-full w-full sm:w-[400px] flex flex-col bg-[#0c0c0d] shadow-2xl transition-transform duration-300 ease-out">
+      <div className="fixed right-0 top-0 h-full w-full sm:w-[320px] flex flex-col bg-[#0c0c0d] shadow-2xl transition-transform duration-300 ease-out">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#1a1a1d]">
-          <h1 className="text-lg font-medium text-white">Filters</h1>
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[#1a1a1d]">
+          <h1 className="text-base font-medium text-white">Filters</h1>
           <IconWrapper className="hover:bg-[#1a1a1d] rounded-md transition-colors">
             <XMarkIcon
               className="size-5 text-zinc-400"
@@ -78,8 +74,8 @@ export default function FiltersContainer() {
         </div>
 
         {/* Filter Content */}
-        <div className="flex-1 overflow-y-auto py-4">
-          <Accordion type="multiple" className="space-y-2">
+        <div className="flex-1 overflow-y-auto py-2">
+          <Accordion type="multiple" className="space-y-1">
             <Filter
               filterName="Tech stack"
               filters={[
@@ -117,28 +113,13 @@ export default function FiltersContainer() {
               filterName="Activity"
               filters={["Highest", "High", "Normal", "Low"]}
             />
-            <Filter
-              filterName="Hire contributors"
-              filters={[]}
-              onClick={handleClickWipFilters}
-            />
-            <Filter
-              filterName="Funding"
-              filters={[]}
-              onClick={handleClickWipFilters}
-            />
-            <Filter
-              filterName="Trending"
-              filters={[]}
-              onClick={handleClickWipFilters}
-            />
           </Accordion>
         </div>
 
         {/* Footer */}
-        <div className="p-6 border-t border-[#1a1a1d]">
+        <div className="px-5 py-4 border-t border-[#1a1a1d]">
           <Button
-            className="w-full py-6 font-medium text-white bg-ox-purple hover:bg-ox-purple/90 transition-colors"
+            className="w-full py-3 font-medium text-white bg-ox-purple hover:bg-ox-purple/90 transition-colors"
             onClick={handleSearchProjects}
           >
             Search Projects

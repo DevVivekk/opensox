@@ -13,11 +13,21 @@ import {
 import { useProjectTitleStore } from "@/store/useProjectTitleStore";
 import { DashboardProjectsProps } from "@/types";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 import { useFilterStore } from "@/store/useFilterStore";
 import { usePathname } from "next/navigation";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import {
+  MagnifyingGlassIcon,
+  SparklesIcon,
+  InformationCircleIcon,
+  XMarkIcon,
+  ArrowUpRightIcon,
+} from "@heroicons/react/24/outline";
 
 type ProjectsContainerProps = { projects: DashboardProjectsProps[] };
+
+const LEGACY_BLOG_PATH = "/blog/why-100-percent-software-isnt-good";
 
 const languageColors: Record<string, string> = {
   javascript: "bg-yellow-500/15 text-yellow-500",
@@ -58,20 +68,59 @@ export default function ProjectsContainer({
   const { projectTitle } = useProjectTitleStore();
   const { setShowFilters } = useFilterStore();
   const isProjectsPage = pathname === "/dashboard/projects";
+  const [showLegacyBanner, setShowLegacyBanner] = useState(true);
 
   return (
     <div className="w-full p-6 sm:p-6">
-      <div className="flex items-center justify-between pb-6">
+      {isProjectsPage && showLegacyBanner && (
+        <div className="mb-6 flex items-start gap-3 rounded-lg border border-dash-border bg-ox-content px-4 py-3">
+          <InformationCircleIcon className="mt-0.5 size-4 shrink-0 text-brand-purple" />
+          <p className="flex-1 text-sm text-text-muted">
+            This is a legacy feature of Opensox.{" "}
+            <Link
+              href={LEGACY_BLOG_PATH}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center font-medium text-text-primary bg-brand-purple px-2 py-0.5 rounded-md hover:bg-brand-purple-light transition-colors"
+            >
+              Here&apos;s more about it
+            </Link>
+            .
+          </p>
+          <button
+            type="button"
+            aria-label="Dismiss legacy feature notice"
+            onClick={() => setShowLegacyBanner(false)}
+            className="rounded-md p-1 text-text-muted transition-colors hover:bg-white/5 hover:text-text-primary"
+          >
+            <XMarkIcon className="size-4" />
+          </button>
+        </div>
+      )}
+
+      <div className="flex flex-col gap-3 pb-6 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-text-primary tracking-tight">
           {projectTitle}
         </h2>
         {isProjectsPage && (
-          <Button
-            className="font-semibold text-text-primary bg-ox-purple text-sm sm:text-base h-10 sm:h-11 px-5 sm:px-6 hover:bg-white-500 rounded-md"
-            onClick={() => setShowFilters(true)}
-          >
-            Find projects
-          </Button>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Button
+              asChild
+              variant="outline"
+              className="gap-2 border-dash-border bg-transparent text-sm sm:text-base h-10 sm:h-11 px-4 sm:px-5 text-text-primary hover:bg-white/5 rounded-md"
+            >
+              <Link href="/pricing" target="_blank" rel="noopener noreferrer">
+                <SparklesIcon className="size-4 text-brand-purple" />
+                Get hand-picked OSS projects
+              </Link>
+            </Button>
+            <Button
+              className="font-semibold text-text-primary bg-ox-purple text-sm sm:text-base h-10 sm:h-11 px-5 sm:px-6 hover:bg-white-500 rounded-md"
+              onClick={() => setShowFilters(true)}
+            >
+              Find projects
+            </Button>
+          </div>
         )}
       </div>
 
@@ -92,14 +141,14 @@ export default function ProjectsContainer({
           <Table className="w-full min-w-[820px] table-fixed">
             {/* Sticky header row */}
             <TableHeader>
-              <TableRow className="border-b border-dash-border">
+              <TableRow className="border-b border-brand-purple-dark hover:bg-transparent">
                 {tableColumns.map((name, i) => (
                   <TableHead
                     key={name}
                     className={[
-                      "px-3 py-3 font-semibold text-brand-purple text-[12px] sm:text-sm whitespace-nowrap",
-                      "sticky top-0 z-30 bg-ox-content", // <- stick
-                      i === 0 ? "text-left" : "text-center",
+                      "px-4 py-3.5 font-semibold text-text-primary text-[11px] sm:text-xs uppercase tracking-wider whitespace-nowrap",
+                      "sticky top-0 z-30 bg-brand-purple",
+                      i === 0 ? "text-left w-[34%] min-w-[220px]" : "text-center",
                     ].join(" ")}
                   >
                     {name}
@@ -109,56 +158,70 @@ export default function ProjectsContainer({
             </TableHeader>
 
             <TableBody>
-              {projects.map((p) => (
+              {projects.map((p) => {
+                const openProject = () =>
+                  window.open(p.url, "_blank", "noopener,noreferrer");
+                return (
                 <TableRow
                   key={p.id}
-                  className="border-y border-ox-gray cursor-pointer hover:bg-white/5 transition-colors"
-                  onClick={() => window.open(p.url, "_blank")}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Open ${p.name} on GitHub`}
+                  className="group border-b border-ox-gray/60 cursor-pointer hover:bg-brand-purple/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-purple/50"
+                  onClick={openProject}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      openProject();
+                    }
+                  }}
                 >
-                  <TableCell className="p-1 sm:p-2">
-                    <div className="flex items-center gap-2">
-                      <div className="rounded-full overflow-hidden inline-block h-4 w-4 sm:h-6 sm:w-6 border">
+                  <TableCell className="px-4 py-3.5">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-full overflow-hidden inline-block h-6 w-6 sm:h-7 sm:w-7 border border-dash-border shrink-0">
                         <Image
                           src={p.avatarUrl}
                           className="w-full h-full object-cover"
                           alt={p.name}
-                          width={24}
-                          height={24}
+                          width={28}
+                          height={28}
                         />
                       </div>
-                      <span className="text-text-primary text-[10px] sm:text-xs font-semibold">
+                      <span className="text-text-primary text-xs sm:text-sm font-semibold group-hover:text-brand-purple transition-colors">
                         {p.name}
                       </span>
+                      <ArrowUpRightIcon className="size-3.5 shrink-0 text-brand-purple opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </TableCell>
 
-                  <TableCell className="text-text-primary text-[10px] sm:text-xs text-center p-1 sm:p-2 whitespace-nowrap">
+                  <TableCell className="text-text-primary text-xs sm:text-sm text-center px-4 py-3.5 whitespace-nowrap">
                     {p.totalIssueCount}
                   </TableCell>
 
-                  <TableCell className="text-center p-1 sm:p-2">
+                  <TableCell className="text-center px-4 py-3.5">
                     <Badge
                       variant="secondary"
-                      className={`${getColor(p.primaryLanguage)} text-[10px] sm:text-xs whitespace-nowrap`}
+                      className={`${getColor(p.primaryLanguage)} text-[11px] sm:text-xs font-medium whitespace-nowrap`}
                     >
                       {p.primaryLanguage}
                     </Badge>
                   </TableCell>
 
-                  <TableCell className="text-text-primary text-[10px] sm:text-xs text-center font-semibold p-1 sm:p-2 whitespace-nowrap">
+                  <TableCell className="text-text-primary text-xs sm:text-sm text-center font-medium px-4 py-3.5 whitespace-nowrap">
                     {p.popularity}
                   </TableCell>
-                  <TableCell className="text-text-primary text-[10px] sm:text-xs text-center font-semibold p-1 sm:p-2 whitespace-nowrap">
+                  <TableCell className="text-text-primary text-xs sm:text-sm text-center font-medium px-4 py-3.5 whitespace-nowrap">
                     {p.stage}
                   </TableCell>
-                  <TableCell className="text-text-primary text-[10px] sm:text-xs text-center font-semibold p-1 sm:p-2 whitespace-nowrap">
+                  <TableCell className="text-text-primary text-xs sm:text-sm text-center font-medium px-4 py-3.5 whitespace-nowrap">
                     {p.competition}
                   </TableCell>
-                  <TableCell className="text-text-primary text-[10px] sm:text-xs text-center font-semibold p-1 sm:p-2 whitespace-nowrap">
+                  <TableCell className="text-text-primary text-xs sm:text-sm text-center font-medium px-4 py-3.5 whitespace-nowrap">
                     {p.activity}
                   </TableCell>
                 </TableRow>
-              ))}
+                );
+              })}
             </TableBody>
           </Table>
         </div>
