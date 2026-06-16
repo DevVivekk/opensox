@@ -4,7 +4,6 @@ import { Check, CornerDownRight, Target, Terminal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { ActiveTag } from "@/components/ui/ActiveTag";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ShineBorder } from "@/components/ui/shine-borders";
@@ -44,20 +43,6 @@ const opensoxFeatures = [
   },
   {
     id: 2,
-    title: "OX Newsletter",
-    description:
-      "A newsletter that keeps you ahead in open source world. It will cover:",
-    features: [
-      "Jobs/internships in opensource projects/companies",
-      "Funding news",
-      "What's trending in open source ecosystem",
-      "Upcoming trends",
-      "Tips to ace in open source",
-      "What's happening in open source companies?",
-    ],
-  },
-  {
-    id: 3,
     title: "30 days Opensox challenge sheet",
     description: [
       "A comprehensive sheet of 30+ modules along with detailed videos to give you a clear path to start rocking in open source.",
@@ -126,7 +111,6 @@ const premiumPlanCard = {
   whatYouGetAfterLaunch: [
     "Everything mentioned above",
     "Advanced tool with Pro filters to find open source projects",
-    "Pro newsletter",
     "30 days opensox challenge sheet",
     "Upcoming Pro features.",
   ],
@@ -210,9 +194,6 @@ const Pricing = () => {
                               <h3 className="lcp-feature-title">
                                 {feature.title}
                               </h3>
-                              {feature.title === "OX Newsletter" && (
-                                <ActiveTag text="completed" />
-                              )}
                             </div>
                           </div>
                           {Array.isArray(feature.description) ? (
@@ -271,9 +252,6 @@ const Pricing = () => {
                             <h3 className="text-2xl font-medium">
                               {feature.title}
                             </h3>
-                            {feature.title === "OX Newsletter" && (
-                              <ActiveTag text="completed" />
-                            )}
                           </div>
                         </div>
                         {Array.isArray(feature.description) ? (
@@ -635,7 +613,6 @@ const SecondaryPricingCard = ({ callbackUrl }: { callbackUrl: string }) => {
                     <p key={index} className="flex items-center gap-2">
                       <Check className="w-5 flex-shrink-0" strokeWidth={4} />{" "}
                       <span>{item}</span>
-                      {item === "Pro newsletter" && <ActiveTag text="done" />}
                     </p>
                   );
                 })}

@@ -60,8 +60,8 @@ export default function TermsOfServicePage() {
               </li>
               <li>
                 <strong>Pro Features:</strong> Access to personalized mentoring,
-                exclusive newsletter, open-source jobs and internship
-                opportunities, and our 30-day contribution challenge
+                open-source jobs and internship opportunities, and our 30-day
+                contribution challenge
               </li>
             </ul>
           </section>
@@ -148,10 +148,6 @@ export default function TermsOfServicePage() {
                 open-source contributions
               </li>
               <li>
-                <strong>Exclusive Newsletter:</strong> Curated content on
-                open-source trends, funding opportunities, jobs, and internships
-              </li>
-              <li>
                 <strong>30-Day Challenge:</strong> Structured program to
                 kickstart your open-source journey
               </li>
@@ -188,7 +184,7 @@ export default function TermsOfServicePage() {
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>Improve our search algorithms and user experience</li>
-              <li>Send you newsletters and updates (if subscribed)</li>
+              <li>Send you product updates and service communications</li>
               <li>Communicate about your account and our Services</li>
               <li>Analyze usage patterns to enhance our platform</li>
             </ul>
@@ -284,14 +280,13 @@ export default function TermsOfServicePage() {
           {/* Section 9 */}
           <section>
             <h2 className="text-2xl lg:text-3xl font-semibold mb-4">
-              9. Newsletter and Communications
+              9. Communications
             </h2>
             <p>
-              By subscribing to our newsletter, you consent to receive emails
-              about open-source trends, funding opportunities, jobs,
-              internships, and platform updates. You may unsubscribe at any time
-              using the link provided in our emails or through your account
-              settings.
+              We may send you emails about platform updates, account activity,
+              and service-related announcements. You may unsubscribe from
+              marketing communications at any time using the link provided in
+              our emails or through your account settings.
             </p>
           </section>
 

@@ -336,8 +336,7 @@ export default function PrivacyPolicyPage() {
                   <li>
                     Sending emails and other communications according to your
                     preferences or that display content that we think will
-                    interest you, including our newsletter about open-source
-                    trends, jobs, and internships (for Pro subscribers).
+                    interest you about Opensox AI and the Services.
                   </li>
                 </ul>
               </div>

@@ -16,7 +16,6 @@ import {
   StarIcon,
   DocumentTextIcon,
   Cog6ToothIcon,
-  NewspaperIcon,
   Squares2X2Icon,
   ChevronDownIcon,
   LockClosedIcon,
@@ -67,12 +66,6 @@ const PREMIUM_ROUTES: RouteConfig[] = [
     path: "/dashboard/pro/dashboard",
     label: "Dashboard",
     icon: <Squares2X2Icon className="size-5" />,
-    badge: "New",
-  },
-  {
-    path: "/dashboard/newsletters",
-    label: "Newsletter",
-    icon: <NewspaperIcon className="size-5" />,
     badge: "New",
   },
 ];
