@@ -1,5 +1,5 @@
 "use client";
-import { Terminal } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Terminal } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import PrimaryButtom from "../ui/custom-button";
@@ -37,6 +37,10 @@ const Hero = () => {
   const handleGetStartedClick = () => {
     trackButtonClick("Get Started", "hero");
   };
+
+  const handleCheckProClick = () => {
+    trackButtonClick("Check Pro", "hero");
+  };
   return (
     <div className="w-full min-h-[50dvh] lg:h-[75dvh] relative overflow-hidden z-10 p-4 lg:p-[60px] flex flex-col items-center justify-center gap-6 ">
       <Image
@@ -50,7 +54,7 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full h-max lg:max-w-3xl space-y-1 text-center"
+        className="relative z-20 w-full h-max lg:max-w-3xl space-y-1 text-center"
       >
         <motion.div
           variants={itemVariants}
@@ -75,7 +79,7 @@ const Hero = () => {
           variants={itemVariants}
           className="text-5xl text-[2.8rem] lg:text-7xl lg:text-[6rem] font-medium tracking-tighter [will-change:transform,opacity] motion-reduce:transition-none motion-reduce:transform-none"
         >
-          Only platform you need to get into Open Source
+          Only platform you need to rock Open Source
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
@@ -88,8 +92,15 @@ const Hero = () => {
           }}
           className="w-full lg:text-2xl tracking-tight font-light sm:max-w-lg mx-auto lg:max-w-4xl lg:text-balance text-text-secondary"
         >
-          Find suitabe OSS repos in seconds. learn the basics,
-          get the mentorship for OSS opportunities, GSoC, etc, and start making progress from today itself.
+          <Link
+            href="https://gist.github.com/apsinghdev/a19bc3b7e4b188bae30c45ad57c4c47d"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 border-b border-text-secondary/60 hover:border-text-primary hover:text-text-primary cursor-pointer transition-colors duration-300"
+          >
+            achieve in 1 year what took me 3 years in open source
+            <ArrowUpRight className="w-4 h-4 -rotate-12" />
+          </Link>
         </motion.p>
       </motion.div>
       <motion.div
@@ -100,7 +111,7 @@ const Hero = () => {
           ease: "easeOut",
           delay: 0.3,
         }}
-        className="cursor-pointer z-30 [will-change:transform,opacity] motion-reduce:transition-none motion-reduce:transform-none"
+        className="z-30 flex items-center gap-3 [will-change:transform,opacity] motion-reduce:transition-none motion-reduce:transform-none"
       >
         <Link
           href="/dashboard/home"
@@ -112,8 +123,14 @@ const Hero = () => {
             Get Started
           </PrimaryButtom>
         </Link>
+        <Link href="/pricing" className="block" onClick={handleCheckProClick}>
+          <PrimaryButtom classname="bg-surface-tertiary border border-border hover:bg-surface-hover">
+            <ArrowRight />
+            Check Pro
+          </PrimaryButtom>
+        </Link>
       </motion.div>
-      <div className="absolute h-[50%] w-full bg-gradient-to-t from-surface-primary via-transparent to-transparent bottom-0 left-1/2 -translate-x-1/2"></div>
+      <div className="pointer-events-none absolute h-[50%] w-full bg-gradient-to-t from-surface-primary via-transparent to-transparent bottom-0 left-1/2 -translate-x-1/2"></div>
     </div>
   );
 };

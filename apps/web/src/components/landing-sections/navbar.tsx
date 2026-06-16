@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import PrimaryButton from "../ui/custom-button";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import Image from "next/image";
-import { Terminal, Github, Menu, X } from "lucide-react";
+import { Terminal, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -15,19 +15,10 @@ const Navbar = () => {
   const isPricingPage = pathname === "/pricing";
   const [showNavbar, setShowNavbar] = useState(isPricingPage ? true : false);
   const [isOpen, setIsOpen] = useState(false);
-  const { trackButtonClick, trackLinkClick } = useAnalytics();
+  const { trackButtonClick } = useAnalytics();
 
   const handleGetStartedClick = (location: "navbar" | "mobile_menu") => {
     trackButtonClick("Get Started", location);
-  };
-
-  const handleContributeClick = (location: "navbar" | "mobile_menu") => {
-    trackLinkClick(
-      "https://github.com/apsinghdev/opensox",
-      "Contribute",
-      location,
-      true
-    );
   };
 
   React.useEffect(() => {
@@ -51,10 +42,7 @@ const Navbar = () => {
   const links = [
     { name: "Pricing", href: "/pricing" },
     { name: "Testimonials", href: "/testimonials" },
-    { name: "Features", href: "/#features" },
-    { name: "Demo", href: "/#demo" },
-    { name: "How it works", href: "/#HIW" },
-    { name: "Stats", href: "/#Stats" },
+    { name: "Blogs", href: "/blog" },
   ];
 
   return (
@@ -109,16 +97,6 @@ const Navbar = () => {
       </div>
       <div className="flex items-center gap-3">
         <Link
-          href="https://github.com/apsinghdev/opensox"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => handleContributeClick("navbar")}
-          className="hidden min-[1115px]:flex items-center gap-2 px-4 py-2.5 bg-github-bg hover:bg-github-hover transition-colors rounded-lg border border-github-border text-white"
-        >
-          <Github className="w-5 h-5" />
-          <span className="text-sm font-medium">Contribute</span>
-        </Link>
-        <Link
           href="/dashboard/home"
           className="cursor-pointer z-30"
           onClick={() => handleGetStartedClick("navbar")}
@@ -146,19 +124,6 @@ const Navbar = () => {
               {link.name}
             </Link>
           ))}
-          <Link
-            href="https://github.com/apsinghdev/opensox"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              setIsOpen(false);
-              handleContributeClick("mobile_menu");
-            }}
-            className="flex items-center gap-2 px-4 py-2 bg-github-bg hover:bg-github-hover rounded-lg border border-github-border text-white transition-colors"
-          >
-            <Github className="w-5 h-5" />
-            <span className="text-sm font-medium">Contribute</span>
-          </Link>
         </motion.div>
       )}
     </motion.nav>
