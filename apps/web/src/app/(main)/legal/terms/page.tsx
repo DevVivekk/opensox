@@ -59,9 +59,7 @@ export default function TermsOfServicePage() {
                 opportunities
               </li>
               <li>
-                <strong>Pro Features:</strong> Access to personalized mentoring,
-                open-source jobs and internship opportunities, and our 30-day
-                contribution challenge
+                <strong>Pro Features:</strong> Access to personalized mentoring, our 30-day contribution challenge and more.
               </li>
             </ul>
           </section>
