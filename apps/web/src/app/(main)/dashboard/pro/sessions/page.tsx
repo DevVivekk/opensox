@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -63,16 +61,6 @@ const ProSessionsPage = (): JSX.Element | null => {
     return (
       <div className="w-full min-h-full bg-ox-content">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-          <div className="mb-8 md:mb-12">
-            <Link
-              href="/dashboard/pro/dashboard"
-              className="inline-flex items-center gap-2 text-text-muted hover:text-brand-purple-light 
-                         transition-colors duration-200 mb-6 group"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" />
-              <span className="text-sm">Back to Pro Dashboard</span>
-            </Link>
-          </div>
           <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
             <p className="text-text-secondary text-lg">
               Failed to load sessions. Please try again later.
@@ -93,16 +81,6 @@ const ProSessionsPage = (): JSX.Element | null => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Header */}
         <div className="mb-8 md:mb-12">
-          {/* Back link */}
-          <Link
-            href="/dashboard/pro/dashboard"
-            className="inline-flex items-center gap-2 text-text-muted hover:text-brand-purple-light 
-                       transition-colors duration-200 mb-6 group"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" />
-            <span className="text-sm">Back to Pro Dashboard</span>
-          </Link>
-
           <div className="flex items-center gap-3 mb-4">
             <h1 className="text-2xl md:text-3xl font-bold text-text-primary">
               Opensox Pro Sessions

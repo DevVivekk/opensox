@@ -67,8 +67,8 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: '/blogs',
-        destination: '/blog',
+        source: '/dashboard/pro/dashboard',
+        destination: '/dashboard/pro/sessions',
         permanent: true,
       },
     ];

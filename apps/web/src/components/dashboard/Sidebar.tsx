@@ -16,7 +16,9 @@ import {
   StarIcon,
   DocumentTextIcon,
   Cog6ToothIcon,
+  PlayIcon,
   Squares2X2Icon,
+  BookOpenIcon,
   ChevronDownIcon,
   LockClosedIcon,
   AcademicCapIcon,
@@ -63,9 +65,20 @@ const FREE_ROUTES: RouteConfig[] = [
 // premium features under Opensox Pro
 const PREMIUM_ROUTES: RouteConfig[] = [
   {
-    path: "/dashboard/pro/dashboard",
-    label: "Dashboard",
+    path: "/dashboard/pro/sessions",
+    label: "Pro Session",
+    icon: <PlayIcon className="size-5" />,
+  },
+  {
+    path: "/dashboard/pro/modules",
+    label: "Pro Modules",
     icon: <Squares2X2Icon className="size-5" />,
+    badge: "New",
+  },
+  {
+    path: "/dashboard/pro/refs",
+    label: "Pro Refs",
+    icon: <BookOpenIcon className="size-5" />,
     badge: "New",
   },
 ];
