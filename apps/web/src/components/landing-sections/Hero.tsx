@@ -4,11 +4,13 @@ import Image from "next/image";
 import React from "react";
 import PrimaryButtom from "../ui/custom-button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Hero = () => {
   const { trackButtonClick } = useAnalytics();
+  const router = useRouter();
   // Container variants for staggered children animation
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -36,10 +38,12 @@ const Hero = () => {
 
   const handleGetStartedClick = () => {
     trackButtonClick("Get Started", "hero");
+    router.push("/dashboard/home");
   };
 
   const handleCheckProClick = () => {
     trackButtonClick("Check Pro", "hero");
+    router.push("/pricing");
   };
   return (
     <div className="w-full min-h-[50dvh] lg:h-[75dvh] relative overflow-hidden z-10 p-4 lg:p-[60px] flex flex-col items-center justify-center gap-6 ">
@@ -113,22 +117,17 @@ const Hero = () => {
         }}
         className="z-30 flex items-center gap-3 [will-change:transform,opacity] motion-reduce:transition-none motion-reduce:transform-none"
       >
-        <Link
-          href="/dashboard/home"
-          className="block"
-          onClick={handleGetStartedClick}
+        <PrimaryButtom onClick={handleGetStartedClick}>
+          <Terminal />
+          Get Started
+        </PrimaryButtom>
+        <PrimaryButtom
+          onClick={handleCheckProClick}
+          classname="bg-surface-tertiary border border-border hover:bg-surface-hover"
         >
-          <PrimaryButtom>
-            <Terminal />
-            Get Started
-          </PrimaryButtom>
-        </Link>
-        <Link href="/pricing" className="block" onClick={handleCheckProClick}>
-          <PrimaryButtom classname="bg-surface-tertiary border border-border hover:bg-surface-hover">
-            <ArrowRight />
-            Check Pro
-          </PrimaryButtom>
-        </Link>
+          <ArrowRight />
+          Check Pro
+        </PrimaryButtom>
       </motion.div>
       <div className="pointer-events-none absolute h-[50%] w-full bg-gradient-to-t from-surface-primary via-transparent to-transparent bottom-0 left-1/2 -translate-x-1/2"></div>
     </div>
