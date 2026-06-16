@@ -77,8 +77,6 @@ follow sites like techcrunch, product hunt, hacker news, and mashable. they ofte
 
 you can also subscribe to newsletters like indie hackers, starter story, or mark lowe's newsletter. they aren't open source–only, but you'll still discover cool projects and communities through them.
 
-btw, i'm also launching an opensox newsletter soon that'll include curated open source updates every week.
-
 ### way 9 — follow active open source contributors
 
 this one's a secret gem.
