@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useLayoutEffect } from "react";
+import { useState, useLayoutEffect, useEffect } from "react";
 
 const themes = [
   { id: "dark", label: "Dark" },
@@ -16,7 +16,12 @@ const validThemes = new Set(themes.map((t) => t.id));
 function getSavedTheme(): ThemeId {
   if (typeof window === "undefined") return "dark";
   const saved = localStorage.getItem("blog-theme");
-  return saved && validThemes.has(saved as ThemeId) ? (saved as ThemeId) : "dark";
+  const theme =  saved && validThemes.has(saved as ThemeId) ? (saved as ThemeId) : 
+  //fallback to device dark/light mode settings when theres no localstorage theme data
+  window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+  return theme      
 }
 
 export default function BlogThemeSelector() {
@@ -25,15 +30,37 @@ export default function BlogThemeSelector() {
   useLayoutEffect(() => {
     document.documentElement.setAttribute("data-blog-theme", theme);
     localStorage.setItem("blog-theme", theme);
-    return () => {
+    return ()=>{
       document.documentElement.removeAttribute("data-blog-theme");
-    };
+    }
   }, [theme]);
+
+  //useEffect to handle the system theme changes
+  useEffect(() => {
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  const handleChange = () => {
+    const systemTheme: ThemeId = media.matches ? "dark" : "light";
+    const currTheme = localStorage.getItem("blog-theme") || systemTheme;
+    //check the current theme if it is sepia or green then no need to perform the system theme changes
+    if (currTheme === "sepia" || currTheme === "green") {
+        return;
+    }
+    setTheme(systemTheme);
+  };
+
+  media.addEventListener("change", handleChange);
+
+  return () => {
+    media.removeEventListener("change", handleChange);
+  };
+}, []);
 
   return (
     <select
       value={theme}
-      onChange={(e) => setTheme(e.target.value as ThemeId)}
+      onChange={(e) => {
+        setTheme( e.target.value as ThemeId);
+      }}
       aria-label="Blog theme"
       className="blog-theme-select"
     >
