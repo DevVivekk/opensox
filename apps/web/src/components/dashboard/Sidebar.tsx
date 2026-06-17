@@ -390,7 +390,13 @@ export default function Sidebar({ overlay = false }: { overlay?: boolean }) {
                     onClick={() => {
                       // Track locked premium feature click
                       trackButtonClick(`${route.label} (Locked)`, "sidebar");
-                      router.push("/pricing");
+                      // Modules has an in-page blurred lock + CTA, so open the
+                      // page; the other pro pages still go straight to pricing.
+                      router.push(
+                        route.path === "/dashboard/pro/modules"
+                          ? route.path
+                          : "/pricing"
+                      );
                     }}
                     className="w-full h-[44px] flex items-center rounded-md cursor-pointer transition-colors px-2 gap-3 opacity-50 hover:opacity-75 group"
                     role="button"
@@ -400,7 +406,11 @@ export default function Sidebar({ overlay = false }: { overlay?: boolean }) {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
                         trackButtonClick(`${route.label} (Locked)`, "sidebar");
-                        router.push("/pricing");
+                        router.push(
+                          route.path === "/dashboard/pro/modules"
+                            ? route.path
+                            : "/pricing"
+                        );
                       }
                     }}
                   >
