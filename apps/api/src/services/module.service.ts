@@ -101,7 +101,9 @@ export const moduleService = {
       ];
     }
 
-    const [total, items] = await Promise.all([
+    // One transaction so the total count and the page rows come from the same
+    // snapshot, keeping pagination consistent if modules change mid-request.
+    const [total, items] = await db.$transaction([
       db.proModule.count({ where }),
       db.proModule.findMany({
         where,
