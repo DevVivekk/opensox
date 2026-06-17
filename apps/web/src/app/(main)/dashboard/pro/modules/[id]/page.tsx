@@ -23,14 +23,15 @@ const ModuleDetailPage = (): JSX.Element => {
   const { data: session, status } = useSession();
   const authenticated = !!session?.user && status === "authenticated";
 
-  const { data, isLoading, isError } = trpc.modules.getById.useQuery(
-    { id: moduleId },
-    {
-      enabled: authenticated && isPaidUser && !!moduleId,
-      refetchOnWindowFocus: false,
-      staleTime: 60 * 1000,
-    }
-  );
+  const { data, isLoading, isError, error, refetch } =
+    trpc.modules.getById.useQuery(
+      { id: moduleId },
+      {
+        enabled: authenticated && isPaidUser && !!moduleId,
+        refetchOnWindowFocus: false,
+        staleTime: 60 * 1000,
+      }
+    );
 
   const module = data as ProModule | undefined;
 
@@ -78,7 +79,37 @@ const ModuleDetailPage = (): JSX.Element => {
     );
   }
 
-  if (isError || !module) {
+  // A genuine 404 comes back as a NOT_FOUND error; anything else is a transient
+  // failure we let the user retry.
+  if (isError && error?.data?.code !== "NOT_FOUND") {
+    return (
+      <Centered>
+        <p className="text-text-primary font-semibold text-lg">
+          Something went wrong
+        </p>
+        <p className="text-text-secondary text-sm mt-1">
+          We couldn&apos;t load this module. Please try again.
+        </p>
+        <div className="flex items-center gap-3 mt-4">
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-brand-purple hover:bg-brand-purple/90 text-text-primary text-sm font-medium transition-colors"
+          >
+            Retry
+          </button>
+          <Link
+            href="/dashboard/pro/modules"
+            className="text-brand-purple-light hover:underline text-sm"
+          >
+            Back to modules
+          </Link>
+        </div>
+      </Centered>
+    );
+  }
+
+  if (!module) {
     return (
       <Centered>
         <p className="text-text-primary font-semibold text-lg">
