@@ -139,6 +139,8 @@ function ModuleList({
   const { data, isLoading } = trpc.modules.adminList.useQuery();
   const deleteModule = trpc.modules.adminDelete.useMutation({
     onSuccess: () => utils.modules.adminList.invalidate(),
+    onError: (error) =>
+      window.alert(`Couldn't delete the module: ${error.message}`),
   });
 
   const modules = (data ?? []) as AdminModule[];
@@ -196,6 +198,10 @@ function ModuleList({
             </button>
             <button
               type="button"
+              disabled={
+                deleteModule.isPending &&
+                deleteModule.variables?.id === module.id
+              }
               onClick={() => {
                 if (
                   window.confirm(`Delete "${module.title}"? This can't be undone.`)
@@ -204,7 +210,7 @@ function ModuleList({
                 }
               }}
               aria-label={`Delete ${module.title}`}
-              className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-dash-raised hover:bg-red-500/20 transition-colors"
+              className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-dash-raised hover:bg-red-500/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Trash2 className="w-4 h-4 text-text-secondary" />
             </button>
