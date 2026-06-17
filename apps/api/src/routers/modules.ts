@@ -18,7 +18,16 @@ const moduleInputSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
   description: z.string().trim().optional(),
   category: categorySchema,
-  bunnyVideoId: z.string().trim().min(1, "Bunny video id is required"),
+  // Goes straight into the signed iframe path, so keep it to GUID-safe
+  // characters (letters, numbers, hyphens, underscores) to avoid URL breakage.
+  bunnyVideoId: z
+    .string()
+    .trim()
+    .min(1, "Bunny video id is required")
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      "Bunny video id may only contain letters, numbers, hyphens, and underscores"
+    ),
   order: z.number().int().optional(),
   links: z
     .array(
