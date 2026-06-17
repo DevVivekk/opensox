@@ -25,8 +25,13 @@ export function ModulePlayer({
   return (
     <div className="w-full aspect-video rounded-xl overflow-hidden border border-dash-border bg-dash-base">
       {isLoading ? (
-        <div className="h-full w-full flex items-center justify-center">
+        <div
+          role="status"
+          aria-live="polite"
+          className="h-full w-full flex items-center justify-center"
+        >
           <div className="w-8 h-8 border-2 border-brand-purple border-t-transparent rounded-full animate-spin" />
+          <span className="sr-only">Loading video...</span>
         </div>
       ) : embedUrl ? (
         <iframe
