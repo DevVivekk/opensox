@@ -17,13 +17,26 @@ const CheckoutConfirmation: React.FC<CheckoutConfirmationProps> = ({
   const { data: session } = useSession();
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [isJoining, setIsJoining] = useState(false);
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+
+  const getAccessToken = (): string | null => {
+    const accessToken = (session as Session)?.accessToken;
+    if (!accessToken) {
+      setError("Authentication token not found");
+      return null;
+    }
+    return accessToken;
+  };
 
   const handleJoinCommunity = async () => {
     if (isJoining) return;
 
     setIsJoining(true);
     setError(null);
+    setSuccessMessage(null);
 
     if (!session?.user) {
       setError("Please sign in to join the community");
@@ -31,17 +44,14 @@ const CheckoutConfirmation: React.FC<CheckoutConfirmationProps> = ({
       return;
     }
 
-    const accessToken = (session as Session)?.accessToken;
-
+    const accessToken = getAccessToken();
     if (!accessToken) {
-      setError("Authentication token not found");
       setIsJoining(false);
       return;
     }
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-      const response = await fetch(`${apiUrl}/join-community`, {
+      const response = await fetch(`${apiUrl}/discord/connect-url`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -50,12 +60,16 @@ const CheckoutConfirmation: React.FC<CheckoutConfirmationProps> = ({
 
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.error || "Failed to join community");
+        setError(errorData.error || "Failed to start Discord connection");
         return;
       }
 
-      const { discordInviteUrl } = await response.json();
-      window.open(discordInviteUrl, "_blank", "noopener,noreferrer");
+      const data = await response.json();
+      if (!data.authUrl) {
+        setError("Discord authorization URL not available");
+        return;
+      }
+      window.location.href = data.authUrl;
     } catch (err) {
       console.error("Failed to join community:", err);
       setError("Failed to connect to server");
@@ -103,7 +117,7 @@ const CheckoutConfirmation: React.FC<CheckoutConfirmationProps> = ({
                   disabled={isJoining}
                   className="px-8 py-3 bg-brand-purple hover:bg-brand-purple-light text-text-primary font-semibold rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isJoining ? "Joining..." : "Join"}
+                  {isJoining ? "Redirecting..." : "Join Pro Community"}
                 </button>
                 <button
                   onClick={() => router.push("/dashboard/home")}
@@ -113,6 +127,9 @@ const CheckoutConfirmation: React.FC<CheckoutConfirmationProps> = ({
                 </button>
               </div>
               {error && <p className="text-error-text text-sm mt-2">{error}</p>}
+              {successMessage && (
+                <p className="text-success-text text-sm mt-2">{successMessage}</p>
+              )}
             </div>
           )}
         </div>
