@@ -97,7 +97,7 @@ const Hero = () => {
           className="w-full lg:text-2xl tracking-tight font-light sm:max-w-lg mx-auto lg:max-w-4xl lg:text-balance text-text-secondary"
         >
           <Link
-            href="https://gist.github.com/apsinghdev/a19bc3b7e4b188bae30c45ad57c4c47d"
+            href="/blog/my-work-so-far"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 border-b border-text-secondary/60 hover:border-text-primary hover:text-text-primary cursor-pointer transition-colors duration-300"
