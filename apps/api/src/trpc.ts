@@ -38,8 +38,39 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
 
 export type ProtectedContext = Context & { user: User };
 
+// Admins are just an allowlist of emails in env. No role column needed: this is
+// only for the lightweight modules CMS, and the list rarely changes.
+function getAdminEmails(): string[] {
+  return (process.env.ADMIN_EMAILS ?? "")
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+export function isAdminEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  return getAdminEmails().includes(email.toLowerCase());
+}
+
+const isAdmin = t.middleware(async ({ ctx, next }) => {
+  const user = (ctx as ProtectedContext).user;
+
+  if (!isAdminEmail(user?.email)) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Admin access required",
+    });
+  }
+
+  return next({ ctx });
+});
+
 export const router = t.router;
 export const publicProcedure = t.procedure;
 export const protectedProcedure: typeof t.procedure = t.procedure.use(
   isAuthed
 ) as any;
+// Logged in AND on the admin allowlist. Used by the modules CMS endpoints.
+export const adminProcedure: typeof t.procedure = t.procedure
+  .use(isAuthed)
+  .use(isAdmin) as any;
