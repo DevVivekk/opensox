@@ -30,9 +30,9 @@ function getConfig(): { libraryId: string; tokenAuthKey: string } {
 /**
  * Build a signed, expiring embed URL for a Bunny Stream video.
  *
- * Bunny's embed token authentication signs the path with a SHA256 of
- * (tokenAuthKey + videoId + expires). Worth re-checking against Bunny's current
- * docs if playback ever 403s, since they have tweaked the formula before.
+ * Bunny's embed view token authentication signs the path with a SHA256 of
+ * (tokenAuthKey + videoId + expires), verified working end to end against a live
+ * Stream library.
  */
 export function buildSignedEmbedUrl(
   videoId: string,
