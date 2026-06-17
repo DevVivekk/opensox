@@ -92,10 +92,14 @@ export function ModuleForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm text-text-secondary mb-1.5">
+        <label
+          htmlFor="module-title"
+          className="block text-sm text-text-secondary mb-1.5"
+        >
           Title
         </label>
         <input
+          id="module-title"
           className={inputClass}
           value={values.title}
           onChange={(e) => update("title", e.target.value)}
@@ -104,10 +108,14 @@ export function ModuleForm({
       </div>
 
       <div>
-        <label className="block text-sm text-text-secondary mb-1.5">
+        <label
+          htmlFor="module-description"
+          className="block text-sm text-text-secondary mb-1.5"
+        >
           Description
         </label>
         <textarea
+          id="module-description"
           className={`${inputClass} min-h-[80px] resize-y`}
           value={values.description}
           onChange={(e) => update("description", e.target.value)}
@@ -116,10 +124,14 @@ export function ModuleForm({
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
-          <label className="block text-sm text-text-secondary mb-1.5">
+          <label
+            htmlFor="module-category"
+            className="block text-sm text-text-secondary mb-1.5"
+          >
             Category
           </label>
           <select
+            id="module-category"
             className={inputClass}
             value={values.category}
             onChange={(e) =>
@@ -135,10 +147,14 @@ export function ModuleForm({
         </div>
 
         <div className="sm:col-span-2">
-          <label className="block text-sm text-text-secondary mb-1.5">
+          <label
+            htmlFor="module-bunny-video-id"
+            className="block text-sm text-text-secondary mb-1.5"
+          >
             Bunny video id
           </label>
           <input
+            id="module-bunny-video-id"
             className={inputClass}
             value={values.bunnyVideoId}
             onChange={(e) => update("bunnyVideoId", e.target.value)}
@@ -149,10 +165,14 @@ export function ModuleForm({
       </div>
 
       <div className="max-w-[8rem]">
-        <label className="block text-sm text-text-secondary mb-1.5">
+        <label
+          htmlFor="module-order"
+          className="block text-sm text-text-secondary mb-1.5"
+        >
           Sort order
         </label>
         <input
+          id="module-order"
           type="number"
           className={inputClass}
           value={values.order}
