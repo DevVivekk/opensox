@@ -148,7 +148,7 @@ export const moduleService = {
     db: Db,
     userId: string,
     moduleId: string
-  ): Promise<{ embedUrl: string }> {
+  ): Promise<{ embedUrl: string } | null> {
     await assertActiveSubscription(db, userId);
 
     const module = await db.proModule.findUnique({
@@ -156,8 +156,10 @@ export const moduleService = {
       select: { bunnyVideoId: true },
     });
 
+    // A missing module is a 404, surfaced by the router. (A failed subscription
+    // check throws AuthorizationError above and becomes a 403.)
     if (!module) {
-      throw new AuthorizationError("Module not found");
+      return null;
     }
 
     return { embedUrl: buildSignedEmbedUrl(module.bunnyVideoId) };

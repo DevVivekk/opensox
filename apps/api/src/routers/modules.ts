@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { ModuleCategory } from "@prisma/client";
 import {
   router,
   protectedProcedure,
@@ -10,11 +11,8 @@ import {
 import { moduleService } from "../services/module.service.js";
 import { AuthorizationError } from "../services/session.service.js";
 
-const categorySchema = z.enum([
-  "open_source",
-  "build_in_public",
-  "first_principles",
-]);
+// Derived from the Prisma enum so the two can't drift apart.
+const categorySchema = z.nativeEnum(ModuleCategory);
 
 const moduleInputSchema = z.object({
   title: z.string().trim().min(1, "Title is required"),
@@ -91,11 +89,15 @@ export const modulesRouter = router({
     .query(async ({ ctx, input }) => {
       const userId = (ctx as ProtectedContext).user.id;
       try {
-        return await moduleService.getPlaybackUrl(
+        const playback = await moduleService.getPlaybackUrl(
           ctx.db.prisma,
           userId,
           input.moduleId
         );
+        if (!playback) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Module not found" });
+        }
+        return playback;
       } catch (error) {
         toTRPCError(error);
       }
