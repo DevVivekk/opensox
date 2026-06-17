@@ -155,6 +155,7 @@ function ProContent({
             <button
               key={tab.value}
               type="button"
+              aria-pressed={category === tab.value}
               onClick={() => onCategoryChange(tab.value)}
               className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-200 ${
                 category === tab.value
@@ -174,6 +175,7 @@ function ProContent({
             type="text"
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
+            aria-label="Search modules"
             placeholder="Search modules..."
             className="w-full bg-dash-surface border border-dash-border rounded-lg pl-9 pr-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus-visible:ring-2 focus-visible:ring-brand-purple/50 focus-visible:outline-none"
           />
