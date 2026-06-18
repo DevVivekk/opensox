@@ -266,7 +266,7 @@ app.get(
   }
 );
 
-app.get("/auth/discord/callback", async (req: Request, res: Response) => {
+app.get("/auth/discord/callback", apiLimiter, async (req: Request, res: Response) => {
   const successUrl =
     process.env.DISCORD_CONNECT_SUCCESS_URL ||
     `${CORS_ORIGINS[0]}/dashboard/account?discord=joined`;

@@ -1,11 +1,14 @@
 import crypto from "crypto";
 
 const getStateSecret = (): string => {
-  return (
-    process.env.DISCORD_OAUTH_STATE_SECRET ||
-    process.env.JWT_SECRET ||
-    "discord-oauth-state-fallback"
-  );
+  const secret =
+    process.env.DISCORD_OAUTH_STATE_SECRET || process.env.JWT_SECRET;
+  if (!secret) {
+    throw new Error(
+      "DISCORD_OAUTH_STATE_SECRET or JWT_SECRET must be configured"
+    );
+  }
+  return secret;
 };
 
 export const createDiscordOAuthState = (userId: string): string => {

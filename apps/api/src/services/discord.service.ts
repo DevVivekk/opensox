@@ -1,6 +1,23 @@
 import prismaModule from "../prisma.js";
 
 const DISCORD_API_BASE = "https://discord.com/api/v10";
+const DISCORD_FETCH_TIMEOUT_MS = 10_000;
+
+const discordFetch = async (
+  url: string,
+  init?: RequestInit
+): Promise<Response> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(
+    () => controller.abort(),
+    DISCORD_FETCH_TIMEOUT_MS
+  );
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+};
 
 type DiscordTokenResponse = {
   access_token: string;
@@ -68,7 +85,7 @@ export const discordService = {
       scope: "identify guilds.join",
     });
 
-    const response = await fetch(`${DISCORD_API_BASE}/oauth2/token`, {
+    const response = await discordFetch(`${DISCORD_API_BASE}/oauth2/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -85,7 +102,7 @@ export const discordService = {
   },
 
   async fetchCurrentDiscordUser(accessToken: string): Promise<DiscordUserResponse> {
-    const response = await fetch(`${DISCORD_API_BASE}/users/@me`, {
+    const response = await discordFetch(`${DISCORD_API_BASE}/users/@me`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -138,20 +155,44 @@ export const discordService = {
       createData.scope = params.scope;
     }
 
-    await prisma.account.upsert({
+    const existingUserWithDiscord = await prisma.user.findFirst({
+      where: {
+        discordUserId: params.discordUserId,
+        id: { not: params.userId },
+      },
+    });
+    if (existingUserWithDiscord) {
+      throw new Error("Discord account is already linked to another user");
+    }
+
+    const existingAccount = await prisma.account.findUnique({
       where: {
         provider_providerAccountId: {
           provider: "discord",
           providerAccountId: params.discordUserId,
         },
       },
-      update: updateData,
-      create: createData,
     });
+    if (existingAccount && existingAccount.userId !== params.userId) {
+      throw new Error("Discord account is already linked to another user");
+    }
 
-    await prisma.user.update({
-      where: { id: params.userId },
-      data: { discordUserId: params.discordUserId } as any,
+    await prisma.$transaction(async (tx) => {
+      await tx.account.upsert({
+        where: {
+          provider_providerAccountId: {
+            provider: "discord",
+            providerAccountId: params.discordUserId,
+          },
+        },
+        update: updateData,
+        create: createData,
+      });
+
+      await tx.user.update({
+        where: { id: params.userId },
+        data: { discordUserId: params.discordUserId } as any,
+      });
     });
   },
 
@@ -169,7 +210,7 @@ export const discordService = {
     const botToken = getRequiredEnv("DISCORD_BOT_TOKEN");
     const guildId = getRequiredEnv("DISCORD_PRO_GUILD_ID");
 
-    const response = await fetch(
+    const response = await discordFetch(
       `${DISCORD_API_BASE}/guilds/${guildId}/members/${discordUserId}`,
       {
         method: "PUT",
@@ -192,7 +233,7 @@ export const discordService = {
   async isMemberOfProGuild(discordUserId: string): Promise<boolean> {
     const botToken = getRequiredEnv("DISCORD_BOT_TOKEN");
     const guildId = getRequiredEnv("DISCORD_PRO_GUILD_ID");
-    const response = await fetch(
+    const response = await discordFetch(
       `${DISCORD_API_BASE}/guilds/${guildId}/members/${discordUserId}`,
       {
         method: "GET",
@@ -217,7 +258,7 @@ export const discordService = {
   async removeMemberFromProGuild(discordUserId: string) {
     const botToken = getRequiredEnv("DISCORD_BOT_TOKEN");
     const guildId = getRequiredEnv("DISCORD_PRO_GUILD_ID");
-    const response = await fetch(
+    const response = await discordFetch(
       `${DISCORD_API_BASE}/guilds/${guildId}/members/${discordUserId}`,
       {
         method: "DELETE",
