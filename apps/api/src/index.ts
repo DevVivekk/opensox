@@ -22,6 +22,11 @@ import {
 
 dotenv.config();
 
+const CRON_SECRET = process.env.CRON_SECRET;
+if (!CRON_SECRET) {
+  throw new Error("CRON_SECRET is not defined in the environment variables");
+}
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 const CORS_ORIGINS = process.env.CORS_ORIGINS
@@ -207,7 +212,12 @@ app.get("/discord/connect-url", apiLimiter, async (req: Request, res: Response) 
     }
 
     const token = authHeader.substring(7);
-    const user = await verifyToken(token);
+    let user;
+    try {
+      user = await verifyToken(token);
+    } catch {
+      return res.status(401).json({ error: "Unauthorized - Invalid token" });
+    }
     const state = createDiscordOAuthState(user.id);
     const authUrl = discordService.buildAuthorizationUrl(state);
 
@@ -239,7 +249,12 @@ app.get(
       }
 
       const token = authHeader.substring(7);
-      const user = await verifyToken(token);
+      let user;
+      try {
+        user = await verifyToken(token);
+      } catch {
+        return res.status(401).json({ error: "Unauthorized - Invalid token" });
+      }
 
       const discordAccount = await discordService.getDiscordAccountForUser(user.id);
       if (!discordAccount?.providerAccountId) {
@@ -334,13 +349,8 @@ app.post(
   apiLimiter,
   async (req: Request, res: Response) => {
     try {
-      const cronSecret = process.env.CRON_SECRET;
-      if (!cronSecret) {
-        return res.status(500).json({ error: "CRON_SECRET is not configured" });
-      }
-
       const requestSecret = req.headers["x-cron-secret"];
-      if (requestSecret !== cronSecret) {
+      if (requestSecret !== CRON_SECRET) {
         return res.status(401).json({ error: "Unauthorized" });
       }
 
@@ -366,28 +376,31 @@ app.post(
 
       let removedFromDiscordCount = 0;
       let failedDiscordRemovals = 0;
+      let expiredCount = 0;
 
       for (const subscription of expiredSubscriptions) {
-        await prismaModule.prisma.subscription.update({
-          where: { id: subscription.id },
-          data: { status: SUBSCRIPTION_STATUS.EXPIRED },
-        });
-
-        if (!discordService.isAutomationEnabled()) {
-          continue;
-        }
-
         const discordUserId = (subscription.user as any).discordUserId as
           | string
           | null
           | undefined;
-        if (!discordUserId) {
+
+        if (!discordService.isAutomationEnabled() || !discordUserId) {
+          await prismaModule.prisma.subscription.update({
+            where: { id: subscription.id },
+            data: { status: SUBSCRIPTION_STATUS.EXPIRED },
+          });
+          expiredCount += 1;
           continue;
         }
 
         try {
           await discordService.removeMemberFromProGuild(discordUserId);
           removedFromDiscordCount += 1;
+          await prismaModule.prisma.subscription.update({
+            where: { id: subscription.id },
+            data: { status: SUBSCRIPTION_STATUS.EXPIRED },
+          });
+          expiredCount += 1;
         } catch (error) {
           failedDiscordRemovals += 1;
           console.error(
@@ -399,7 +412,7 @@ app.post(
 
       return res.status(200).json({
         status: "ok",
-        expiredCount: expiredSubscriptions.length,
+        expiredCount,
         removedFromDiscordCount,
         failedDiscordRemovals,
       });
