@@ -6,6 +6,7 @@ import {
   SUBSCRIPTION_STATUS,
   PAYMENT_STATUS,
 } from "../constants/subscription.js";
+import { discordService } from "./discord.service.js";
 
 const { prisma } = prismaModule;
 
@@ -338,6 +339,21 @@ export const paymentService = {
         where: { id: paymentId },
         data: { subscriptionId: subscription.id },
       });
+
+      if (discordService.isAutomationEnabled()) {
+        try {
+          const discordAccount = await discordService.getDiscordAccountForUser(userId);
+          if (discordAccount?.providerAccountId && discordAccount.access_token) {
+            await discordService.addMemberToProGuild(
+              discordAccount.providerAccountId,
+              discordAccount.access_token
+            );
+          }
+        } catch (error) {
+          // don't fail payment flow if discord sync fails
+          console.error("Failed to sync Discord membership after payment:", error);
+        }
+      }
 
       return subscription;
     } catch (error) {

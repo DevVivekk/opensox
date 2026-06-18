@@ -14,8 +14,18 @@ import crypto from "crypto";
 import { paymentService } from "./services/payment.service.js";
 import { verifyToken } from "./utils/auth.js";
 import { SUBSCRIPTION_STATUS } from "./constants/subscription.js";
+import { discordService } from "./services/discord.service.js";
+import {
+  createDiscordOAuthState,
+  verifyDiscordOAuthState,
+} from "./utils/discord-oauth-state.js";
 
 dotenv.config();
+
+const CRON_SECRET = process.env.CRON_SECRET;
+if (!CRON_SECRET) {
+  throw new Error("CRON_SECRET is not defined in the environment variables");
+}
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -136,22 +146,282 @@ app.get("/join-community", apiLimiter, async (req: Request, res: Response) => {
       });
     }
 
-    // Get Discord invite URL from environment
-    const discordInviteUrl = process.env.DISCORD_INVITE_URL;
-    if (!discordInviteUrl) {
-      console.error("DISCORD_INVITE_URL not configured");
-      return res.status(500).json({ error: "Community invite not configured" });
+    if (!discordService.isAutomationEnabled()) {
+      // Get Discord invite URL from environment (legacy mode)
+      const discordInviteUrl = process.env.DISCORD_INVITE_URL;
+      if (!discordInviteUrl) {
+        console.error("DISCORD_INVITE_URL not configured");
+        return res
+          .status(500)
+          .json({ error: "Community invite not configured" });
+      }
+
+      return res.status(200).json({
+        mode: "legacy",
+        discordInviteUrl,
+        message: "Subscription verified. You can join the community.",
+      });
     }
 
+    const discordAccount = await discordService.getDiscordAccountForUser(user.id);
+    if (!discordAccount || !discordAccount.providerAccountId) {
+      return res.status(409).json({
+        error: "Discord account not connected",
+        mode: "automated",
+        needsDiscordConnection: true,
+      });
+    }
+
+    if (!discordAccount.access_token) {
+      return res.status(409).json({
+        error: "Discord access token missing, please reconnect Discord",
+        mode: "automated",
+        needsDiscordConnection: true,
+      });
+    }
+
+    await discordService.addMemberToProGuild(
+      discordAccount.providerAccountId,
+      discordAccount.access_token
+    );
+
     return res.status(200).json({
-      discordInviteUrl,
-      message: "Subscription verified. You can join the community.",
+      mode: "automated",
+      joined: true,
+      message: "Connected successfully. You have been added to the pro community.",
     });
   } catch (error: any) {
     console.error("Community invite error:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 });
+
+app.get("/discord/connect-url", apiLimiter, async (req: Request, res: Response) => {
+  try {
+    if (!discordService.isAutomationEnabled()) {
+      return res.status(400).json({
+        error: "Discord automation is not enabled",
+      });
+    }
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        error: "Unauthorized - Authorization header with Bearer token required",
+      });
+    }
+
+    const token = authHeader.substring(7);
+    let user;
+    try {
+      user = await verifyToken(token);
+    } catch {
+      return res.status(401).json({ error: "Unauthorized - Invalid token" });
+    }
+    const state = createDiscordOAuthState(user.id);
+    const authUrl = discordService.buildAuthorizationUrl(state);
+
+    return res.status(200).json({ authUrl });
+  } catch (error) {
+    console.error("Discord connect-url error:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get(
+  "/discord/community-status",
+  apiLimiter,
+  async (req: Request, res: Response) => {
+    try {
+      if (!discordService.isAutomationEnabled()) {
+        return res.status(200).json({
+          mode: "legacy",
+          connected: false,
+          joined: false,
+        });
+      }
+
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({
+          error: "Unauthorized - Authorization header with Bearer token required",
+        });
+      }
+
+      const token = authHeader.substring(7);
+      let user;
+      try {
+        user = await verifyToken(token);
+      } catch {
+        return res.status(401).json({ error: "Unauthorized - Invalid token" });
+      }
+
+      const discordAccount = await discordService.getDiscordAccountForUser(user.id);
+      if (!discordAccount?.providerAccountId) {
+        return res.status(200).json({
+          mode: "automated",
+          connected: false,
+          joined: false,
+        });
+      }
+
+      const joined = await discordService.isMemberOfProGuild(
+        discordAccount.providerAccountId
+      );
+
+      return res.status(200).json({
+        mode: "automated",
+        connected: true,
+        joined,
+      });
+    } catch (error) {
+      console.error("Discord community-status error:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
+app.get("/auth/discord/callback", apiLimiter, async (req: Request, res: Response) => {
+  const successUrl =
+    process.env.DISCORD_CONNECT_SUCCESS_URL ||
+    `${CORS_ORIGINS[0]}/dashboard/account?discord=joined`;
+  const failureBaseUrl =
+    process.env.DISCORD_CONNECT_FAILURE_URL || `${CORS_ORIGINS[0]}/dashboard/account`;
+
+  try {
+    if (!discordService.isAutomationEnabled()) {
+      return res.redirect(`${failureBaseUrl}?discord=feature_disabled`);
+    }
+
+    const code = req.query.code;
+    const state = req.query.state;
+    if (typeof code !== "string" || typeof state !== "string") {
+      return res.redirect(`${failureBaseUrl}?discord=invalid_callback`);
+    }
+
+    const statePayload = verifyDiscordOAuthState(state);
+    if (!statePayload) {
+      return res.redirect(`${failureBaseUrl}?discord=invalid_state`);
+    }
+
+    const tokenResponse = await discordService.exchangeCodeForToken(code);
+    const discordUser = await discordService.fetchCurrentDiscordUser(
+      tokenResponse.access_token
+    );
+
+    const discordAccountPayload: {
+      userId: string;
+      discordUserId: string;
+      accessToken: string;
+      expiresIn: number;
+      tokenType: string;
+      refreshToken?: string;
+      scope?: string;
+    } = {
+      userId: statePayload.userId,
+      discordUserId: discordUser.id,
+      accessToken: tokenResponse.access_token,
+      expiresIn: tokenResponse.expires_in,
+      tokenType: tokenResponse.token_type,
+    };
+    if (tokenResponse.refresh_token !== undefined) {
+      discordAccountPayload.refreshToken = tokenResponse.refresh_token;
+    }
+    if (tokenResponse.scope !== undefined) {
+      discordAccountPayload.scope = tokenResponse.scope;
+    }
+
+    await discordService.upsertDiscordAccount(discordAccountPayload);
+    await discordService.addMemberToProGuild(
+      discordUser.id,
+      tokenResponse.access_token
+    );
+
+    return res.redirect(successUrl);
+  } catch (error) {
+    console.error("Discord callback error:", error);
+    return res.redirect(`${failureBaseUrl}?discord=callback_failed`);
+  }
+});
+
+app.post(
+  "/internal/jobs/expire-subscriptions",
+  apiLimiter,
+  async (req: Request, res: Response) => {
+    try {
+      const requestSecret = req.headers["x-cron-secret"];
+      if (requestSecret !== CRON_SECRET) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const expiredSubscriptions = await prismaModule.prisma.subscription.findMany({
+        where: {
+          status: SUBSCRIPTION_STATUS.ACTIVE,
+          endDate: { lt: new Date() },
+        },
+        include: {
+          user: true,
+        },
+        take: 500,
+      });
+
+      if (expiredSubscriptions.length === 0) {
+        return res.status(200).json({
+          status: "ok",
+          expiredCount: 0,
+          removedFromDiscordCount: 0,
+          skipped: !discordService.isAutomationEnabled(),
+        });
+      }
+
+      let removedFromDiscordCount = 0;
+      let failedDiscordRemovals = 0;
+      let expiredCount = 0;
+
+      for (const subscription of expiredSubscriptions) {
+        const discordUserId = (subscription.user as any).discordUserId as
+          | string
+          | null
+          | undefined;
+
+        if (!discordService.isAutomationEnabled() || !discordUserId) {
+          await prismaModule.prisma.subscription.update({
+            where: { id: subscription.id },
+            data: { status: SUBSCRIPTION_STATUS.EXPIRED },
+          });
+          expiredCount += 1;
+          continue;
+        }
+
+        try {
+          await discordService.removeMemberFromProGuild(discordUserId);
+          removedFromDiscordCount += 1;
+          await prismaModule.prisma.subscription.update({
+            where: { id: subscription.id },
+            data: { status: SUBSCRIPTION_STATUS.EXPIRED },
+          });
+          expiredCount += 1;
+        } catch (error) {
+          failedDiscordRemovals += 1;
+          console.error(
+            `Failed to remove Discord user ${discordUserId} for subscription ${subscription.id}:`,
+            error
+          );
+        }
+      }
+
+      return res.status(200).json({
+        status: "ok",
+        expiredCount,
+        removedFromDiscordCount,
+        failedDiscordRemovals,
+      });
+    } catch (error) {
+      console.error("Expire subscriptions job failed:", error);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
 
 // Razorpay Webhook Handler (Backup Flow)
 app.post("/webhook/razorpay", async (req: Request, res: Response) => {
