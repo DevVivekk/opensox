@@ -111,7 +111,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.className} ${dmMono.variable} antialiased bg-background`}
+        className={`${geistSans.className} ${dmMono.variable} antialiased bg-background text-foreground`}
       >
         <PostHogProvider>
           <ThemeProvider
