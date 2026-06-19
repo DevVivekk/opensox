@@ -11,4 +11,5 @@
 export const PROTECTED_DASHBOARD_ROUTES = [
   "/dashboard/projects",
   "/dashboard/sheet",
+  "/dashboard/pro",
 ] as const;

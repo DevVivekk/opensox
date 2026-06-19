@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx src/index.ts",
+    "seed:pro-modules": "tsx scripts/seed-pro-modules.ts",
     "build": "prisma generate && tsc",
     "postinstall": "[ -f prisma/schema.prisma ] && prisma generate || true"
   },

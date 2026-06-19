@@ -141,3 +141,38 @@ model SessionTopic {
 
   @@index([sessionId, order])
 }
+
+enum ModuleCategory {
+  open_source
+  build_in_public
+  first_principles
+}
+
+model ProModule {
+  id           String          @id @default(cuid())
+  title        String
+  description  String?
+  category     ModuleCategory
+  // Bunny Stream video GUID. Never sent to the client; the playback endpoint
+  // turns it into a short-lived signed embed URL on demand.
+  bunnyVideoId String
+  order        Int             @default(0)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  links        ProModuleLink[]
+
+  @@index([category])
+  @@index([order])
+  @@index([createdAt])
+}
+
+model ProModuleLink {
+  id       String    @id @default(cuid())
+  moduleId String
+  label    String
+  url      String
+  order    Int       @default(0)
+  module   ProModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@index([moduleId, order])
+}
